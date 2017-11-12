@@ -50,6 +50,10 @@ Magrathea::Magrathea(QWidget *parent) :
     ui->frame->setLayout(mCameraLayout);
 
     //------------------------------------------
+    //gantry
+    ui->enableAxesBox->setEnabled(false);
+
+    //------------------------------------------
     //position
     ui->xAxisPositionLine2->setReadOnly(true);
     ui->yAxisPositionLine2->setReadOnly(true);
@@ -84,17 +88,17 @@ Magrathea::Magrathea(QWidget *parent) :
 
     //gantry
     connect(ui->connectGantryBox,
-            &QCheckBox::toggled,
-            mMotionHandler,
-            &MotionHandler::ActivateGantry);
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(connectGantryBoxClicked(bool)));
 
     connect(ui->enableAxesBox,
-            &QCheckBox::toggled,
-            mMotionHandler,
-            &MotionHandler::ActivateAllAxes);
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(enableAxesBoxClicked(bool)));
 
     connect(ui->homeAxesButton,
-            &QCheckBox::clicked,
+            &QPushButton::clicked,
             mMotionHandler,
             &MotionHandler::Home);
 
@@ -214,6 +218,64 @@ void Magrathea::captureButtonClicked()
     mCameraImageCapture->capture(filename);
     mCamera->unlock();
     return;
+}
+
+//******************************************
+//gantry
+
+//------------------------------------------
+//connect gantry
+void Magrathea::connectGantryBoxClicked(bool clicked)
+{
+    if (clicked)
+    {
+        if (mMotionHandler->ConnectGantry()) {
+            ui->enableAxesBox->setEnabled(true);
+        } else {
+            ui->connectGantryBox->setChecked(false);
+            qWarning("could not connect to gantry");
+        }
+    } else {
+        if (mMotionHandler->axesEnabled) {
+            ui->connectGantryBox->setChecked(true);
+            qWarning("disable axes before disconnecting from gantry");
+        } else {
+            if(mMotionHandler->DisconnectGantry())
+                ui->enableAxesBox->setEnabled(false);
+            else {
+                ui->connectGantryBox->setChecked(true);
+                qWarning("could not disconnect from gantry");
+            }
+        }
+    }
+}
+
+//------------------------------------------
+//enable axes
+void Magrathea::enableAxesBoxClicked(bool clicked)
+{
+    if (clicked)
+    {
+        if (mMotionHandler->gantryConnected) {
+            if (mMotionHandler->EnableAxes()) {
+                ui->connectGantryBox->setEnabled(false);
+            } else {
+                ui->enableAxesBox->setChecked(false);
+                qWarning("could not enable axes");
+            }
+        } else {
+            ui->enableAxesBox->setChecked(false);
+            qWarning("connect to the gantry before enabling axes");
+        }
+    } else {
+        if (mMotionHandler->DisableAxes()) {
+            ui->enableAxesBox->setChecked(false);
+            ui->connectGantryBox->setEnabled(true);
+        } else {
+            ui->enableAxesBox->setCheckable(true);
+            qWarning("could not disable axes");
+        }
+    }
 }
 
 //******************************************

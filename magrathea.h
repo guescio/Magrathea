@@ -31,6 +31,10 @@ private slots:
     void focusButtonClicked();
     void captureButtonClicked();
 
+    //gantry
+    void connectGantryBoxClicked(bool clicked);
+    void enableAxesBoxClicked(bool clicked);
+
     //joystick buttons
     //x axis
     void positiveXButtonClicked();
