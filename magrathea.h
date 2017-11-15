@@ -27,37 +27,25 @@ public:
 private slots:
 
     //camera
-    void enableCameraBoxToggled(bool toggled);
+    void enableCameraBoxClicked(bool checked);
     void focusButtonClicked();
     void captureButtonClicked();
 
     //gantry
-    void connectGantryBoxClicked(bool clicked);
-    void enableAxesBoxClicked(bool clicked);
+    void connectGantryBoxClicked(bool checked);
+    void enableAxesBoxClicked(bool checked);
 
-    //joystick buttons
+    //joystick
     void enableJoystickFreeRun(bool checked);
-    void enableJoystickStepMotion(bool checked);
-
-    //x axis
     void freeRun();
+    void enableJoystickStepMotion(bool checked);
     void stepMotion();
-    void xAxisStepContinousBoxToggled(bool flag);
 
-    //y axis
-    void positiveYButtonClicked();
-    void negativeYButtonClicked();
-    void yAxisStepContinousBoxToggled(bool flag);
-
-    //z axis
-    void positiveZButtonClicked();
-    void negativeZButtonClicked();
-    void zAxisStepContinousBoxToggled(bool flag);
-
-    //u axis
-    void positiveUButtonClicked();
-    void negativeUButtonClicked();
-    void uAxisStepContinousBoxToggled(bool flag);
+    //autorepeat
+    void xAxisStepContinousBoxClicked(bool checked);
+    void yAxisStepContinousBoxClicked(bool checked);
+    void zAxisStepContinousBoxClicked(bool checked);
+    void uAxisStepContinousBoxClicked(bool checked);
 
 private:
     Ui::Magrathea *ui;
@@ -69,6 +57,7 @@ private:
     MotionHandler *mMotionHandler;
 
     int autoRepeatDelay;
+    int autoRepeatInterval;
 };
 
 #endif // MAGRATHEA_H
