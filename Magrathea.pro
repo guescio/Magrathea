@@ -43,5 +43,3 @@ win32 : exists(C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/A3200.h) {
         LOCATION = TRIUMF
         message(in Vancouver with Aerotech A3200 gantry)
 }
-
-osx: TEST

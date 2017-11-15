@@ -137,13 +137,11 @@ void MotionHandler::MoveYBy(double y, double speed) {
     return;
 }
 
-
 //------------------------------------------
 void MotionHandler::MoveZBy(double z, double speed) {
     qInfo("move z axis by %f mm at %f mm/s", z, speed);
     return;
 }
-
 
 //------------------------------------------
 void MotionHandler::MoveUBy(double u, double speed) {
@@ -156,21 +154,21 @@ void MotionHandler::MoveUBy(double u, double speed) {
 // free run
 
 //------------------------------------------
-void MotionHandler::RunX(double direction)
+void MotionHandler::RunX(double direction, double speed)
 {
-    qInfo("free running in %sx...", direction<0?"-":"+");
+    qInfo("free running in %sx axis at %f mm/s", direction<0?"-":"+", speed);
     return;
 }
 
 //------------------------------------------
 void MotionHandler::EndRunX()
 {
-    qInfo("stop free running in x");
+    qInfo("stop free running in x axis");
     return;
 }
 
 //------------------------------------------
-void MotionHandler::RunY(double direction)
+void MotionHandler::RunY(double direction, double speed)
 {
     qInfo("free running in %sy...", direction<0?"-":"+");
     return;
@@ -184,7 +182,7 @@ void MotionHandler::EndRunY()
 }
 
 //------------------------------------------
-void MotionHandler::RunZ(double direction)
+void MotionHandler::RunZ(double direction, double speed)
 {
     qInfo("free running in %sz...", direction<0?"-":"+");
     return;
@@ -198,7 +196,7 @@ void MotionHandler::EndRunZ()
 }
 
 //------------------------------------------
-void MotionHandler::RunU(double direction)
+void MotionHandler::RunU(double direction, double speed)
 {
     qInfo("free running in %su...", direction<0?"-":"+");
     return;
@@ -213,7 +211,7 @@ void MotionHandler::EndRunU()
 
 //******************************************
 // default speeds
-
+/*
 //------------------------------------------
 void MotionHandler::SetSpeedDefaults(double speedX, double speedY, double speedZ, double speedU)
 {
@@ -252,6 +250,7 @@ void MotionHandler::SetSpeedU(double speed)
     qInfo("setting u axis speed to %f deg/s", speed);
     return;
 }
+*/
 
 //******************************************
 //gantry current position

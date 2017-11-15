@@ -36,9 +36,12 @@ private slots:
     void enableAxesBoxClicked(bool clicked);
 
     //joystick buttons
+    void enableJoystickFreeRun(bool checked);
+    void enableJoystickStepMotion(bool checked);
+
     //x axis
-    void positiveXButtonClicked();
-    void negativeXButtonClicked();
+    void freeRun();
+    void stepMotion();
     void xAxisStepContinousBoxToggled(bool flag);
 
     //y axis

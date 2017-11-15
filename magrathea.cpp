@@ -8,6 +8,7 @@
 #include <QTextStream>
 #include <QtMessageHandler>
 #include <MotionHandler.h>
+#include <QSignalMapper>
 
 //******************************************
 Magrathea::Magrathea(QWidget *parent) :
@@ -29,10 +30,6 @@ Magrathea::Magrathea(QWidget *parent) :
     ui->leftTabWidget->setCurrentWidget(outputLogTextEdit);
 
     //------------------------------------------
-    //gantry
-    //MotionHandler gantry;
-
-    //------------------------------------------
     //camera
 
     //create camera objects
@@ -52,6 +49,7 @@ Magrathea::Magrathea(QWidget *parent) :
     //------------------------------------------
     //gantry
     ui->enableAxesBox->setEnabled(false);
+    ui->freeRunRadioButton->setChecked(true);
 
     //------------------------------------------
     //position
@@ -102,22 +100,18 @@ Magrathea::Magrathea(QWidget *parent) :
             mMotionHandler,
             &MotionHandler::Home);
 
-    //joystick buttons
-    //x axis
-    connect(ui->positiveXButton,
-            SIGNAL(pressed()),
+    //joystick
+    //free run or step motion
+    connect(ui->freeRunRadioButton,
+            SIGNAL(clicked(bool)),
             this,
-            SLOT(positiveXButtonClicked()));
-    ui->positiveXButton->setAutoRepeatDelay(autoRepeatDelay);
-
-    connect(ui->negativeXButton,
-            SIGNAL(pressed()),
+            SLOT(enableJoystickFreeRun(bool)));
+    connect(ui->stepRadioButton,
+            SIGNAL(clicked(bool)),
             this,
-            SLOT(negativeXButtonClicked()));
-    ui->negativeXButton->setAutoRepeatDelay(autoRepeatDelay);
-
+            SLOT(enableJoystickStepMotion(bool)));
     connect(ui->xAxisStepContinousBox,
-            SIGNAL(toggled(bool)),
+            SIGNAL(clicked(bool)),
             this,
             SLOT(xAxisStepContinousBoxToggled(bool)));
 
@@ -183,6 +177,42 @@ Magrathea::~Magrathea()
 }
 
 //******************************************
+//x axis
+void Magrathea::enableJoystickFreeRun(bool checked)
+{
+    if (checked)
+    {
+        //disconnect signal from all slots
+        ui->positiveXButton->disconnect();
+        //NOTE free run requires parameters
+        connect(ui->positiveXButton,
+                SIGNAL(pressed()),
+                this,
+                SLOT(freeRun()));
+        //NOTE end run does *not* require parameters
+        connect(ui->positiveXButton,
+                &QPushButton::released,
+                mMotionHandler,
+                &MotionHandler::EndRunX);
+    }
+}
+
+//******************************************
+void Magrathea::enableJoystickStepMotion(bool checked)
+{
+    if (checked)
+    {
+        ui->positiveXButton->disconnect();
+        //NOTE step motion requires parameters
+        connect(ui->positiveXButton,
+                SIGNAL(clicked(bool)),
+                this,
+                SLOT(stepMotion()));
+        ui->positiveXButton->setAutoRepeatDelay(autoRepeatDelay);
+    }
+}
+
+//******************************************
 //enable camera
 void Magrathea::enableCameraBoxToggled(bool toggled)
 {
@@ -225,6 +255,7 @@ void Magrathea::captureButtonClicked()
 
 //------------------------------------------
 //connect gantry
+//proxy function to handle the ConnectGantry and DisconnectGanrty functions from MotionHandler
 void Magrathea::connectGantryBoxClicked(bool clicked)
 {
     if (clicked)
@@ -252,6 +283,7 @@ void Magrathea::connectGantryBoxClicked(bool clicked)
 
 //------------------------------------------
 //enable axes
+//proxy function to handle the EnableAxes and DisableAxes functions from MotionHandler
 void Magrathea::enableAxesBoxClicked(bool clicked)
 {
     if (clicked)
@@ -280,15 +312,20 @@ void Magrathea::enableAxesBoxClicked(bool clicked)
 
 //******************************************
 //x axis
-void Magrathea::positiveXButtonClicked()
+void Magrathea::freeRun()
 {
-    qInfo("move right");
+    if (sender() == ui->positiveXButton)
+        mMotionHandler->RunX(1, ui->xAxisSpeedLineEdit->text().toDouble());
+    else if (sender() == ui->negativeXButton)
+        mMotionHandler->RunX(-1, ui->xAxisSpeedLineEdit->text().toDouble());
     return;
 }
 
-void Magrathea::negativeXButtonClicked()
+void Magrathea::stepMotion()
 {
-    qInfo("move left");
+    if (sender() == ui->positiveXButton)
+        mMotionHandler->MoveXBy(ui->xAxisStepLineEdit->text().toDouble(),
+                                ui->xAxisSpeedLineEdit->text().toDouble());
     return;
 }
 
