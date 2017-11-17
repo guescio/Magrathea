@@ -4,7 +4,11 @@
 //******************************************
 MotionHandler::MotionHandler() :
     gantryConnected(false),
-    axesEnabled(false)
+    axesEnabled(false),
+    xAxisEnabled(false),
+    yAxisEnabled(false),
+    zAxisEnabled(false),
+    uAxisEnabled(false)
     {}
 
 //******************************************
@@ -34,6 +38,42 @@ bool MotionHandler::EnableAxes()
 {
     qInfo("enable axes");
     axesEnabled=true;
+    xAxisEnabled=true;
+    yAxisEnabled=true;
+    zAxisEnabled=true;
+    uAxisEnabled=true;
+    return true;
+}
+
+//------------------------------------------
+bool MotionHandler::EnableXAxis()
+{
+    qInfo("enable x axis");
+    xAxisEnabled=true;
+    return true;
+}
+
+//------------------------------------------
+bool MotionHandler::EnableYAxis()
+{
+    qInfo("enable y axis");
+    yAxisEnabled=true;
+    return true;
+}
+
+//------------------------------------------
+bool MotionHandler::EnableZAxis()
+{
+    qInfo("enable z axis");
+    zAxisEnabled=true;
+    return true;
+}
+
+//------------------------------------------
+bool MotionHandler::EnableUAxis()
+{
+    qInfo("enable u axis");
+    uAxisEnabled=true;
     return true;
 }
 
@@ -42,6 +82,42 @@ bool MotionHandler::DisableAxes()
 {
     qInfo("disable axes");
     axesEnabled=false;
+    xAxisEnabled=false;
+    yAxisEnabled=false;
+    zAxisEnabled=false;
+    uAxisEnabled=false;
+    return true;
+}
+
+//------------------------------------------
+bool MotionHandler::DisableXAxis()
+{
+    qInfo("disable x axis");
+    xAxisEnabled=false;
+    return true;
+}
+
+//------------------------------------------
+bool MotionHandler::DisableYAxis()
+{
+    qInfo("disable y axis");
+    yAxisEnabled=false;
+    return true;
+}
+
+//------------------------------------------
+bool MotionHandler::DisableZAxis()
+{
+    qInfo("disable z axis");
+    zAxisEnabled=false;
+    return true;
+}
+
+//------------------------------------------
+bool MotionHandler::DisableUAxis()
+{
+    qInfo("disable u axis");
+    uAxisEnabled=false;
     return true;
 }
 
@@ -115,7 +191,7 @@ void MotionHandler::MoveUTo(double u, double speed) {
 }
 
 //******************************************
-// relative  motion
+// step  motion
 // NOTE units in mm, mm/s and deg/s
 
 //------------------------------------------
@@ -152,60 +228,61 @@ void MotionHandler::MoveUBy(double u, double speed) {
 
 //******************************************
 // free run
+// NOTE units in mm, mm/s and deg/s
 
 //------------------------------------------
 void MotionHandler::RunX(double direction, double speed)
 {
-    qInfo("free running in %sx axis at %.3f mm/s", direction<0?"-":"+", speed);
+    qInfo("free running %sx axis at %.3f mm/s", direction<0?"-":"+", speed);
     return;
 }
 
 //------------------------------------------
 void MotionHandler::EndRunX()
 {
-    qInfo("stop free running in x axis");
+    qInfo("stop free running x axis");
     return;
 }
 
 //------------------------------------------
 void MotionHandler::RunY(double direction, double speed)
 {
-    qInfo("free running in %sy axis at %.3f mm/s", direction<0?"-":"+", speed);
+    qInfo("free running %sy axis at %.3f mm/s", direction<0?"-":"+", speed);
     return;
 }
 
 //------------------------------------------
 void MotionHandler::EndRunY()
 {
-    qInfo("stop free running in y axis");
+    qInfo("stop free running y axis");
     return;
 }
 
 //------------------------------------------
 void MotionHandler::RunZ(double direction, double speed)
 {
-    qInfo("free running in %sz axis at %.3f mm/s", direction<0?"-":"+", speed);
+    qInfo("free running %sz axis at %.3f mm/s", direction<0?"-":"+", speed);
     return;
 }
 
 //------------------------------------------
 void MotionHandler::EndRunZ()
 {
-    qInfo("stop free running in z axis");
+    qInfo("stop free running z axis");
     return;
 }
 
 //------------------------------------------
 void MotionHandler::RunU(double direction, double speed)
 {
-    qInfo("free running in %su axis at %.3f deg/s", direction<0?"-":"+", speed);
+    qInfo("free running %su axis at %.3f deg/s", direction<0?"-":"+", speed);
     return;
 }
 
 //------------------------------------------
 void MotionHandler::EndRunU()
 {
-    qInfo("stop free running in u axis");
+    qInfo("stop free running u axis");
     return;
 }
 

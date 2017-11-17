@@ -625,7 +625,7 @@
              </widget>
             </item>
             <item row="2" column="4">
-             <widget class="QCheckBox" name="xAxisStepContinousBox">
+             <widget class="QCheckBox" name="xAxisStepRepeatBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -894,7 +894,7 @@
              </spacer>
             </item>
             <item row="2" column="4">
-             <widget class="QCheckBox" name="yAxisStepContinousBox">
+             <widget class="QCheckBox" name="yAxisStepRepeatBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1131,7 +1131,7 @@
              </widget>
             </item>
             <item row="2" column="4">
-             <widget class="QCheckBox" name="zAxisStepContinousBox">
+             <widget class="QCheckBox" name="zAxisStepRepeatBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1189,7 +1189,7 @@
              </widget>
             </item>
             <item row="2" column="4">
-             <widget class="QCheckBox" name="uAxisStepContinousBox">
+             <widget class="QCheckBox" name="uAxisStepRepeatBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>

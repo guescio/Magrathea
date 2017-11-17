@@ -40,12 +40,8 @@ private slots:
     void freeRun();
     void enableJoystickStepMotion(bool checked);
     void stepMotion();
-
-    //autorepeat
-    void xAxisStepContinousBoxClicked(bool checked);
-    void yAxisStepContinousBoxClicked(bool checked);
-    void zAxisStepContinousBoxClicked(bool checked);
-    void uAxisStepContinousBoxClicked(bool checked);
+    void axisStepRepeatBoxClicked(bool checked);
+    void positionMove();
 
 private:
     Ui::Magrathea *ui;

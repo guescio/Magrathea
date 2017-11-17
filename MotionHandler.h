@@ -14,6 +14,10 @@ public:
 
     bool gantryConnected;
     bool axesEnabled;
+    bool xAxisEnabled;
+    bool yAxisEnabled;
+    bool zAxisEnabled;
+    bool uAxisEnabled;
 
 public slots:
 
@@ -24,7 +28,15 @@ public slots:
 
     // enable axes before any movement
     virtual bool EnableAxes();
+    virtual bool EnableXAxis();
+    virtual bool EnableYAxis();
+    virtual bool EnableZAxis();
+    virtual bool EnableUAxis();
     virtual bool DisableAxes();
+    virtual bool DisableXAxis();
+    virtual bool DisableYAxis();
+    virtual bool DisableZAxis();
+    virtual bool DisableUAxis();
 
     //******************************************
     // gantry current position
