@@ -519,7 +519,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="homeAxesButton">
+            <widget class="QPushButton" name="axesHomeButton">
              <property name="text">
               <string>home axes</string>
              </property>

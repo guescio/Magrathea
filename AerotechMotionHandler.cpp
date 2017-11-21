@@ -8,10 +8,34 @@ MotionHandler::MotionHandler() :
     yAxisEnabled(false),
     zAxisEnabled(false),
     uAxisEnabled(false)
-    {}
+    {
+    gantry = NULL;
+
+    xAxis = (AXISMASK)AXISMASK_02;
+    xIndex = (AXISINDEX)AXISINDEX_02;
+
+    yAxis = (AXISMASK)AXISMASK_00; // AXISMASK_01 is YY, the y-axis slave
+    yIndex = AXISINDEX_00;
+
+    zAxis = (AXISMASK)AXISMASK_03;
+    zIndex = AXISINDEX_03;
+
+    uAxis = (AXISMASK)AXISMASK_04;
+    uIndex = AXISINDEX_04;
+
+    allAxes = (AXISMASK)(AXISMASK_02 | AXISMASK_00 | AXISMASK_03 | AXISMASK_04);
+    xyAxes = (AXISMASK)(AXISMASK_02 | AXISMASK_00);
+}
 
 //******************************************
-MotionHandler::~MotionHandler() {}
+MotionHandler::~MotionHandler() {
+    if (gantry != NULL) {
+        if (!A3200MotionDisable(gantry, TASKID_Library, allAxes))
+            qWarning("axes disabled");
+        if (!A3200Disconnect(gantry))
+            qWarning("gantry disconnected");
+    }
+}
 
 //******************************************
 // connect to the gantry
@@ -21,7 +45,7 @@ bool MotionHandler::connectGantry(bool flag)
 {
     if (flag) {
         qInfo("connecting gantry...");
-        if (true) { //connect gantry here
+        if (A3200Connect(&gantry)) { //connect gantry here
             qInfo("gantry connected");
             gantryConnected=true;
             return true;
@@ -31,7 +55,7 @@ bool MotionHandler::connectGantry(bool flag)
         }
     } else {
         qInfo("disconnecting gantry...");
-        if (true) { //disconnect gantry here
+        if (A3200Disconnect(&gantry)) { //disconnect gantry here
             qInfo("gantry disconnected");
             gantryConnected=false;
             return true;
@@ -54,7 +78,7 @@ bool MotionHandler::enableAxes(bool flag)
 {
     if (flag) {
         qInfo("enabling axes...");
-        if (true) { //enable all axes here
+        if (A3200MotionEnable(gantry, TASKID_Library, allAxes)) { //enable all axes here
             qInfo("axes enabled");
             return true;
         } else {
@@ -63,7 +87,7 @@ bool MotionHandler::enableAxes(bool flag)
         }
     } else {
         qInfo("disabling axes...");
-        if (true) { //disable all axes here
+        if (A3200MotionDisable(gantry, TASKID_Library, allAxes)) { //disable all axes here
             qInfo("axes disabled");
             return true;
         } else {
@@ -79,7 +103,7 @@ bool MotionHandler::enableXAxis(bool flag)
 {
     if (flag) {
         qInfo("enabling x axis...");
-        if (true) { //enable x axis here
+        if (A3200MotionEnable(gantry, TASKID_Library, xAxis)) { //enable x axis here
             qInfo("x axis enabled");
             xAxisEnabled=true;
             return true;
@@ -89,7 +113,7 @@ bool MotionHandler::enableXAxis(bool flag)
         }
     } else {
         qInfo("disabling x axis...");
-        if (true) { //disable x axis here
+        if (A3200MotionDisable(gantry, TASKID_Library, xAxis)) { //disable x axis here
             qInfo("x axis disabled");
             xAxisEnabled=false;
             return true;
@@ -106,7 +130,7 @@ bool MotionHandler::enableYAxis(bool flag)
 {
     if (flag) {
         qInfo("enabling y axis...");
-        if (true) { //enable y axis here
+        if (A3200MotionEnable(gantry, TASKID_Library, yAxis)) { //enable y axis here
             qInfo("y axis enabled");
             yAxisEnabled=true;
             return true;
@@ -116,7 +140,7 @@ bool MotionHandler::enableYAxis(bool flag)
         }
     } else {
         qInfo("disabling y axis...");
-        if (true) { //disable y axis here
+        if (A3200MotionDisable(gantry, TASKID_Library, yAxis)) { //disable y axis here
             qInfo("y axis disabled");
             yAxisEnabled=false;
             return true;
@@ -133,7 +157,7 @@ bool MotionHandler::enableZAxis(bool flag)
 {
     if (flag) {
         qInfo("enabling z axis...");
-        if (true) { //enable z axis here
+        if (A3200MotionEnable(gantry, TASKID_Library, zAxis)) { //enable z axis here
             qInfo("z axis enabled");
             zAxisEnabled=true;
             return true;
@@ -143,7 +167,7 @@ bool MotionHandler::enableZAxis(bool flag)
         }
     } else {
         qInfo("disabling z axis...");
-        if (true) { //disable z axis here
+        if (A3200MotionDisable(gantry, TASKID_Library, zAxis)) { //disable z axis here
             qInfo("z axis disabled");
             zAxisEnabled=false;
             return true;
@@ -160,7 +184,7 @@ bool MotionHandler::enableUAxis(bool flag)
 {
     if (flag) {
         qInfo("enabling u axis...");
-        if (true) { //enable u axis here
+        if (A3200MotionEnable(gantry, TASKID_Library, uAxis)) { //enable u axis here
             qInfo("u axis enabled");
             uAxisEnabled=true;
             return true;
@@ -170,7 +194,7 @@ bool MotionHandler::enableUAxis(bool flag)
         }
     } else {
         qInfo("disabling u axis...");
-        if (true) { //disable u axis here
+        if (A3200MotionDisable(gantry, TASKID_Library, uAxis)) { //disable u axis here
             qInfo("u axis disabled");
             uAxisEnabled=false;
             return true;
@@ -218,7 +242,7 @@ bool MotionHandler::disableUAxis()
 //------------------------------------------
 bool MotionHandler::home() {
     qInfo("homing axes...");
-    if (true) { //home all axes here
+    if (A3200MotionHome(gantry, TASKID_Library, allAxes)) { //home all axes here
         qInfo("axes homed");
         return true;
     } else {
@@ -231,7 +255,7 @@ bool MotionHandler::home() {
 //------------------------------------------
 bool MotionHandler::homeX() {
     qInfo("homing x axis...");
-    if (true) { //home x axis here
+    if (A3200MotionHome(gantry, TASKID_Library, xAxis)) { //home x axis here
         qInfo("x axis homed");
         return true;
     } else {
@@ -244,7 +268,7 @@ bool MotionHandler::homeX() {
 //------------------------------------------
 bool MotionHandler::homeY() {
     qInfo("homing y axis...");
-    if (true) { //home y axis here
+    if (A3200MotionHome(gantry, TASKID_Library, yAxis)) { //home y axis here
         qInfo("y axis homed");
         return true;
     } else {
@@ -257,7 +281,7 @@ bool MotionHandler::homeY() {
 //------------------------------------------
 bool MotionHandler::homeZ() {
     qInfo("homing z axis...");
-    if (true) { //home z axis here
+    if (A3200MotionHome(gantry, TASKID_Library, zAxis)) { //home z axis here
         qInfo("z axis homed");
         return true;
     } else {
@@ -270,7 +294,7 @@ bool MotionHandler::homeZ() {
 //------------------------------------------
 bool MotionHandler::homeU() {
     qInfo("homing u axis...");
-    if (true) { //home u axis here
+    if (A3200MotionHome(gantry, TASKID_Library, uAxis)) { //home u axis here
         qInfo("u axis homed");
         return true;
     } else {
@@ -288,7 +312,10 @@ bool MotionHandler::homeU() {
 bool MotionHandler::moveTo(double x, double y, double z, double speed)
 {
     qInfo("moving to (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed...", x, y, z, speed);
-    if (true) { //move to destination here
+    if (A3200MotionMoveAbs(gantry, TASKID_Library, xIndex, x, speed) &&
+        A3200MotionMoveAbs(gantry, TASKID_Library, yIndex, y, speed) &&
+        A3200MotionMoveAbs(gantry, TASKID_Library, zIndex, z, speed/4.)) { //move to destination (and wait) here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved to destination");
         return true;
     } else {
@@ -301,7 +328,8 @@ bool MotionHandler::moveTo(double x, double y, double z, double speed)
 //------------------------------------------
 bool MotionHandler::moveXTo(double x, double speed) {
     qInfo("moving x axis to %.3f mm at %.3f mm/s speed", x, speed);
-    if (true) { //move to destination here
+    if (A3200MotionMoveAbs(gantry, TASKID_Library, xIndex, x, speed)) { //move to destination here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved x axis to destination");
         return true;
     } else {
@@ -314,7 +342,8 @@ bool MotionHandler::moveXTo(double x, double speed) {
 //------------------------------------------
 bool MotionHandler::moveYTo(double y, double speed) {
     qInfo("moving y axis to %.3f mm at %.3f mm/s speed", y, speed);
-    if (true) { //move to destination here
+    if (A3200MotionMoveAbs(gantry, TASKID_Library, yIndex, y, speed)) { //move to destination here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved y axis to destination");
         return true;
     } else {
@@ -327,7 +356,8 @@ bool MotionHandler::moveYTo(double y, double speed) {
 //------------------------------------------
 bool MotionHandler::moveZTo(double z, double speed) {
     qInfo("moving z axis to %.3f mm at %.3f mm/s speed", z, speed);
-    if (true) { //move to destination here
+    if (A3200MotionMoveAbs(gantry, TASKID_Library, zIndex, z, speed)) { //move to destination here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved z axis to destination");
         return true;
     } else {
@@ -340,7 +370,8 @@ bool MotionHandler::moveZTo(double z, double speed) {
 //------------------------------------------
 bool MotionHandler::moveUTo(double u, double speed) {
     qInfo("moving u axis to %.3f mm at %.3f mm/s speed", u, speed);
-    if (true) { //move to destination here
+    if (A3200MotionMoveAbs(gantry, TASKID_Library, uIndex, u, speed)) { //move to destination here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved u axis to destination");
         return true;
     } else {
@@ -358,7 +389,10 @@ bool MotionHandler::moveUTo(double u, double speed) {
 bool MotionHandler::moveBy(double x, double y, double z, double speed)
 {
     qInfo("moving by (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed", x, y, z, speed);
-    if (true) { //move by step here
+    if (A3200MotionMoveInc(gantry, TASKID_Library, xIndex, x, speed) &&
+        A3200MotionMoveInc(gantry, TASKID_Library, yIndex, y, speed) &&
+        A3200MotionMoveInc(gantry, TASKID_Library, zIndex, z, speed/4.)) { //move by step here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved by step");
         return true;
     } else {
@@ -371,7 +405,8 @@ bool MotionHandler::moveBy(double x, double y, double z, double speed)
 //------------------------------------------
 bool MotionHandler::moveXBy(double x, double speed) {
     qInfo("moving x axis by %.3f mm at %.3f mm/s", x, speed);
-    if (true) { //move by step here
+    if (A3200MotionMoveInc(gantry, TASKID_Library, xIndex, x, speed)) { //move by step here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved x axis by step");
         return true;
     } else {
@@ -384,7 +419,8 @@ bool MotionHandler::moveXBy(double x, double speed) {
 //------------------------------------------
 bool MotionHandler::moveYBy(double y, double speed) {
     qInfo("moving y axis by %.3f mm at %.3f mm/s", y, speed);
-    if (true) { //move by step here
+    if (A3200MotionMoveInc(gantry, TASKID_Library, yIndex, y, speed)) { //move by step here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved y axis by step");
         return true;
     } else {
@@ -397,7 +433,8 @@ bool MotionHandler::moveYBy(double y, double speed) {
 //------------------------------------------
 bool MotionHandler::moveZBy(double z, double speed) {
     qInfo("moving z axis by %.3f mm at %.3f mm/s", z, speed);
-    if (true) { //move by step here
+    if (A3200MotionMoveInc(gantry, TASKID_Library, zIndex, z, speed)) { //move by step here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved z axis by step");
         return true;
     } else {
@@ -410,8 +447,9 @@ bool MotionHandler::moveZBy(double z, double speed) {
 //------------------------------------------
 bool MotionHandler::moveUBy(double u, double speed) {
     qInfo("moving u axis by %.3f deg at %.3f deg/s", u, speed);
-    if (true) { //move by step here
-        qInfo("moved u- axis by step");
+    if (A3200MotionMoveInc(gantry, TASKID_Library, uIndex, u, speed)) { //move by step here
+        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
+        qInfo("moved u axis by step");
         return true;
     } else {
         qWarning("could not move u axis by step");
@@ -429,7 +467,7 @@ bool MotionHandler::moveUBy(double u, double speed) {
 bool MotionHandler::runX(double direction, double speed)
 {
     qInfo("free running %sx axis at %.3f mm/s", direction<0?"-":"+", speed);
-    if (true) { //free run here
+    if (A3200MotionFreeRun(gantry, TASKID_Library, xIndex, speed)) { //free run here
         return true;
     } else {
         qWarning("could not free run along x axis");
@@ -442,7 +480,7 @@ bool MotionHandler::runX(double direction, double speed)
 bool MotionHandler::endRunX()
 {
     qInfo("stop free running along x axis");
-    if (true) { //stop free run here
+    if (A3200MotionFreeRunStop(gantry, TASKID_Library, xIndex)) { //stop free run here
         return true;
     } else {
         qWarning("could not stop free run along x axis");
@@ -455,7 +493,7 @@ bool MotionHandler::endRunX()
 bool MotionHandler::runY(double direction, double speed)
 {
     qInfo("free running %sy axis at %.3f mm/s", direction<0?"-":"+", speed);
-    if (true) { //free run here
+    if (A3200MotionFreeRun(gantry, TASKID_Library, yIndex, speed)) { //free run here
         return true;
     } else {
         qWarning("could not free run along y axis");
@@ -468,7 +506,7 @@ bool MotionHandler::runY(double direction, double speed)
 bool MotionHandler::endRunY()
 {
     qInfo("stop free running along y axis");
-    if (true) { //stop free run here
+    if (A3200MotionFreeRunStop(gantry, TASKID_Library, yIndex)) { //stop free run here
         return true;
     } else {
         qWarning("could not stop free run along y axis");
@@ -481,7 +519,7 @@ bool MotionHandler::endRunY()
 bool MotionHandler::runZ(double direction, double speed)
 {
     qInfo("free running %sz axis at %.3f mm/s", direction<0?"-":"+", speed);
-    if (true) { //free run here
+    if (A3200MotionFreeRun(gantry, TASKID_Library, zIndex, speed)) { //free run here
         return true;
     } else {
         qWarning("could not free run along z axis");
@@ -494,7 +532,7 @@ bool MotionHandler::runZ(double direction, double speed)
 bool MotionHandler::endRunZ()
 {
     qInfo("stop free running along z axis");
-    if (true) { //stop free run here
+    if (A3200MotionFreeRunStop(gantry, TASKID_Library, zIndex)) { //stop free run here
         return true;
     } else {
         qWarning("could not stop free run along z axis");
@@ -507,7 +545,7 @@ bool MotionHandler::endRunZ()
 bool MotionHandler::runU(double direction, double speed)
 {
     qInfo("free running %su axis at %.3f deg/s", direction<0?"-":"+", speed);
-    if (true) { //free run here
+    if (A3200MotionFreeRun(gantry, TASKID_Library, uIndex, speed)) { //free run here
         return true;
     } else {
         qWarning("could not free run along u axis");
@@ -520,7 +558,7 @@ bool MotionHandler::runU(double direction, double speed)
 bool MotionHandler::endRunU()
 {
     qInfo("stop free running along u axis");
-    if (true) { //stop free run here
+    if (A3200MotionFreeRunStop(gantry, TASKID_Library, uIndex)) { //stop free run here
         return true;
     } else {
         qWarning("could not stop free run along u axis");

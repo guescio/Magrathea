@@ -9,6 +9,9 @@
 #include <QtMessageHandler>
 #include <MotionHandler.h>
 #include <cmath>
+#ifdef VANCOUVER
+*include <AerotechMotionhandler.h>
+#endif
 
 //******************************************
 Magrathea::Magrathea(QWidget *parent) :
@@ -27,9 +30,9 @@ Magrathea::Magrathea(QWidget *parent) :
 
     //------------------------------------------
     #ifdef VANCOUVER
-        qInfo("in Vancouver with Aerotech A3200 gantry");
+        qInfo("Vancouver, Aerotech A3200 gantry");
     #else
-        qInfo("code development with no gantry");
+        qInfo("where is your gantry?");
     #endif
 
     //------------------------------------------
@@ -98,11 +101,11 @@ Magrathea::Magrathea(QWidget *parent) :
     connect(ui->stepRadioButton,    SIGNAL(clicked(bool)), this, SLOT(enableJoystickStepMotion(bool)));
 
     //home axes
-    connect(ui->homeAxesButton,  &QPushButton::clicked, mMotionHandler, &MotionHandler::Home);
-    connect(ui->xAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::HomeX);
-    connect(ui->yAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::HomeY);
-    connect(ui->zAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::HomeZ);
-    connect(ui->uAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::HomeU);
+    connect(ui->axesHomeButton,  &QPushButton::clicked, mMotionHandler, &MotionHandler::home);
+    connect(ui->xAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::homeX);
+    connect(ui->yAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::homeY);
+    connect(ui->zAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::homeZ);
+    connect(ui->uAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::homeU);
 
     //position move
     connect(ui->xAxisPositionMoveButton, SIGNAL(clicked(bool)), this, SLOT(positionMove()));
@@ -181,7 +184,7 @@ void Magrathea::connectGantryBoxClicked(bool checked)
 {
     if (checked)
     {
-        if (mMotionHandler->ConnectGantry()) {
+        if (mMotionHandler->connectGantry()) {
             ui->enableAxesButton->setEnabled(true);
             ui->disableAxesButton->setEnabled(true);
             ui->xAxisEnableBox->setEnabled(true);
@@ -197,7 +200,7 @@ void Magrathea::connectGantryBoxClicked(bool checked)
             ui->connectGantryBox->setChecked(true);
             qWarning("disable axes before disconnecting from gantry");
         } else {
-            if(mMotionHandler->DisconnectGantry()) {
+            if(mMotionHandler->disconnectGantry()) {
                 ui->enableAxesButton->setEnabled(false);
                 ui->disableAxesButton->setEnabled(false);
                 ui->xAxisEnableBox->setEnabled(false);
@@ -227,10 +230,10 @@ void Magrathea::enableAxesClicked(bool checked)
         ui->yAxisEnableBox->setChecked(false);
         ui->zAxisEnableBox->setChecked(false);
         ui->uAxisEnableBox->setChecked(false);
-    } else if (sender() == ui->xAxisEnableBox) mMotionHandler->EnableXAxis(checked);
-      else if (sender() == ui->yAxisEnableBox) mMotionHandler->EnableYAxis(checked);
-      else if (sender() == ui->zAxisEnableBox) mMotionHandler->EnableZAxis(checked);
-      else if (sender() == ui->uAxisEnableBox) mMotionHandler->EnableUAxis(checked);
+    } else if (sender() == ui->xAxisEnableBox) mMotionHandler->enableXAxis(checked);
+      else if (sender() == ui->yAxisEnableBox) mMotionHandler->enableYAxis(checked);
+      else if (sender() == ui->zAxisEnableBox) mMotionHandler->enableZAxis(checked);
+      else if (sender() == ui->uAxisEnableBox) mMotionHandler->enableUAxis(checked);
 
     //check enabled axes
     if (mMotionHandler->xAxisEnabled || mMotionHandler->yAxisEnabled || mMotionHandler->zAxisEnabled || mMotionHandler->uAxisEnabled) {
@@ -252,6 +255,7 @@ void Magrathea::enableThings(bool checked) {
     ui->leftTabWidget->widget(0)->setEnabled(checked);
 
     //motion
+    ui->axesHomeButton->setEnabled(checked);
     ui->xAxisHomeButton->setEnabled(checked);
     ui->yAxisHomeButton->setEnabled(checked);
     ui->zAxisHomeButton->setEnabled(checked);
@@ -303,14 +307,14 @@ void Magrathea::enableJoystickFreeRun(bool checked)
         connect(ui->negativeUButton, SIGNAL(pressed()), this, SLOT(freeRun()));
 
         //NOTE end run does *not* require parameters
-        connect(ui->positiveXButton, &QPushButton::released, mMotionHandler, &MotionHandler::EndRunX);
-        connect(ui->negativeXButton, &QPushButton::released, mMotionHandler, &MotionHandler::EndRunX);
-        connect(ui->positiveYButton, &QPushButton::released, mMotionHandler, &MotionHandler::EndRunY);
-        connect(ui->negativeYButton, &QPushButton::released, mMotionHandler, &MotionHandler::EndRunY);
-        connect(ui->positiveZButton, &QPushButton::released, mMotionHandler, &MotionHandler::EndRunZ);
-        connect(ui->negativeZButton, &QPushButton::released, mMotionHandler, &MotionHandler::EndRunZ);
-        connect(ui->positiveUButton, &QPushButton::released, mMotionHandler, &MotionHandler::EndRunU);
-        connect(ui->negativeUButton, &QPushButton::released, mMotionHandler, &MotionHandler::EndRunU);
+        connect(ui->positiveXButton, &QPushButton::released, mMotionHandler, &MotionHandler::endRunX);
+        connect(ui->negativeXButton, &QPushButton::released, mMotionHandler, &MotionHandler::endRunX);
+        connect(ui->positiveYButton, &QPushButton::released, mMotionHandler, &MotionHandler::endRunY);
+        connect(ui->negativeYButton, &QPushButton::released, mMotionHandler, &MotionHandler::endRunY);
+        connect(ui->positiveZButton, &QPushButton::released, mMotionHandler, &MotionHandler::endRunZ);
+        connect(ui->negativeZButton, &QPushButton::released, mMotionHandler, &MotionHandler::endRunZ);
+        connect(ui->positiveUButton, &QPushButton::released, mMotionHandler, &MotionHandler::endRunU);
+        connect(ui->negativeUButton, &QPushButton::released, mMotionHandler, &MotionHandler::endRunU);
     }
 }
 
@@ -319,21 +323,21 @@ void Magrathea::enableJoystickFreeRun(bool checked)
 void Magrathea::freeRun()
 {
     if (sender() == ui->positiveXButton)
-        mMotionHandler->RunX(+1, ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runX(+1, ui->xAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->negativeXButton)
-        mMotionHandler->RunX(-1, ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runX(-1, ui->xAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->positiveYButton)
-        mMotionHandler->RunY(+1, ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runY(+1, ui->yAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->negativeYButton)
-        mMotionHandler->RunY(-1, ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runY(-1, ui->yAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->positiveZButton)
-        mMotionHandler->RunZ(+1, ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runZ(+1, ui->zAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->negativeZButton)
-        mMotionHandler->RunZ(-1, ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runZ(-1, ui->zAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->positiveUButton)
-        mMotionHandler->RunU(+1, ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runU(+1, ui->uAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->negativeUButton)
-        mMotionHandler->RunU(-1, ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runU(-1, ui->uAxisSpeedLineEdit->text().toDouble());
     return;
 }
 
@@ -401,31 +405,31 @@ void Magrathea::stepMotion()
 {
     //joystick
     if (sender() == ui->positiveXButton)
-        mMotionHandler->MoveXBy(+1*abs(ui->xAxisStepLineEdit->text().toDouble()), ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveXBy(+1*abs(ui->xAxisStepLineEdit->text().toDouble()), ui->xAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->negativeXButton)
-        mMotionHandler->MoveXBy(-1*abs(ui->xAxisStepLineEdit->text().toDouble()), ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveXBy(-1*abs(ui->xAxisStepLineEdit->text().toDouble()), ui->xAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->positiveYButton)
-        mMotionHandler->MoveYBy(+1*abs(ui->yAxisStepLineEdit->text().toDouble()), ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveYBy(+1*abs(ui->yAxisStepLineEdit->text().toDouble()), ui->yAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->negativeYButton)
-        mMotionHandler->MoveYBy(-1*abs(ui->yAxisStepLineEdit->text().toDouble()), ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveYBy(-1*abs(ui->yAxisStepLineEdit->text().toDouble()), ui->yAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->positiveZButton)
-        mMotionHandler->MoveZBy(+1*abs(ui->zAxisStepLineEdit->text().toDouble()), ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveZBy(+1*abs(ui->zAxisStepLineEdit->text().toDouble()), ui->zAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->negativeZButton)
-        mMotionHandler->MoveZBy(-1*abs(ui->zAxisStepLineEdit->text().toDouble()), ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveZBy(-1*abs(ui->zAxisStepLineEdit->text().toDouble()), ui->zAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->positiveUButton)
-        mMotionHandler->MoveUBy(+1*abs(ui->uAxisStepLineEdit->text().toDouble()), ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveUBy(+1*abs(ui->uAxisStepLineEdit->text().toDouble()), ui->uAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->negativeUButton)
-        mMotionHandler->MoveUBy(-1*abs(ui->uAxisStepLineEdit->text().toDouble()), ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveUBy(-1*abs(ui->uAxisStepLineEdit->text().toDouble()), ui->uAxisSpeedLineEdit->text().toDouble());
 
     //naviagtion panel
     else if  (sender() == ui->xAxisStepMoveButton)
-        mMotionHandler->MoveXBy(ui->xAxisStepLineEdit->text().toDouble(), ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveXBy(ui->xAxisStepLineEdit->text().toDouble(), ui->xAxisSpeedLineEdit->text().toDouble());
     else if  (sender() == ui->yAxisStepMoveButton)
-        mMotionHandler->MoveYBy(ui->yAxisStepLineEdit->text().toDouble(), ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveYBy(ui->yAxisStepLineEdit->text().toDouble(), ui->yAxisSpeedLineEdit->text().toDouble());
     else if  (sender() == ui->zAxisStepMoveButton)
-        mMotionHandler->MoveZBy(ui->zAxisStepLineEdit->text().toDouble(), ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveZBy(ui->zAxisStepLineEdit->text().toDouble(), ui->zAxisSpeedLineEdit->text().toDouble());
     else if  (sender() == ui->uAxisStepMoveButton)
-        mMotionHandler->MoveUBy(ui->uAxisStepLineEdit->text().toDouble(), ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveUBy(ui->uAxisStepLineEdit->text().toDouble(), ui->uAxisSpeedLineEdit->text().toDouble());
     return;
 }
 
@@ -434,13 +438,13 @@ void Magrathea::stepMotion()
 void Magrathea::positionMove()
 {
     if (sender() == ui->xAxisPositionMoveButton)
-        mMotionHandler->MoveXTo(ui->xAxisPositionMoveLine->text().toDouble(), ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveXTo(ui->xAxisPositionMoveLine->text().toDouble(), ui->xAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->yAxisPositionMoveButton)
-        mMotionHandler->MoveYTo(ui->yAxisPositionMoveLine->text().toDouble(), ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveYTo(ui->yAxisPositionMoveLine->text().toDouble(), ui->yAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->zAxisPositionMoveButton)
-        mMotionHandler->MoveZTo(ui->zAxisPositionMoveLine->text().toDouble(), ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveZTo(ui->zAxisPositionMoveLine->text().toDouble(), ui->zAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->uAxisPositionMoveButton)
-        mMotionHandler->MoveUTo(ui->uAxisPositionMoveLine->text().toDouble(), ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveUTo(ui->uAxisPositionMoveLine->text().toDouble(), ui->uAxisSpeedLineEdit->text().toDouble());
     return;
 }
 

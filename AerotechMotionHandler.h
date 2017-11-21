@@ -75,17 +75,22 @@ public slots:
     virtual bool runU(double direction, double speed=std::numeric_limits<double>::quiet_NaN());
     virtual bool endRunU();
 
-    //******************************************
-    // default speeds
-    // NOTE default unit is mm/s
-    /*
-    virtual void SetSpeedDefaults(double speedX=std::numeric_limits<double>::quiet_NaN(),
-                                  double speedY=std::numeric_limits<double>::quiet_NaN(),
-                                  double speedZ=std::numeric_limits<double>::quiet_NaN(),
-                                  double speedU=std::numeric_limits<double>::quiet_NaN());
-    virtual void SetSpeedX(double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual void SetSpeedY(double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual void SetSpeedZ(double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual void SetSpeedU(double speed=std::numeric_limits<double>::quiet_NaN());
-    */
+private:
+
+    A3200Handle gantry;
+
+    AXISMASK xaxis;
+    AXISINDEX xindex;
+
+    AXISMASK yaxis;
+    AXISINDEX yindex;
+
+    AXISMASK zaxis;
+    AXISINDEX zindex;
+
+    AXISMASK uaxis;
+    AXISINDEX uindex;
+
+    AXISMASK allAxes;
+    AXISMASK xyAxes;
 };
