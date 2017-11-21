@@ -105,9 +105,9 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
-       <widget class="QWidget" name="tab">
+       <widget class="QWidget" name="joystickTab">
         <attribute name="title">
          <string>joystick</string>
         </attribute>
@@ -281,7 +281,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_5">
+       <widget class="QWidget" name="positionTab">
         <attribute name="title">
          <string>position</string>
         </attribute>
@@ -460,6 +460,12 @@
    </item>
    <item row="0" column="1">
     <widget class="QTabWidget" name="rightTabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>600</width>
@@ -499,9 +505,16 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="enableAxesBox">
+            <widget class="QPushButton" name="enableAxesButton">
              <property name="text">
               <string>enable axes</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="disableAxesButton">
+             <property name="text">
+              <string>disable axes</string>
              </property>
             </widget>
            </item>

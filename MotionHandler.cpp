@@ -4,7 +4,6 @@
 //******************************************
 MotionHandler::MotionHandler() :
     gantryConnected(false),
-    axesEnabled(false),
     xAxisEnabled(false),
     yAxisEnabled(false),
     zAxisEnabled(false),
@@ -18,107 +17,123 @@ MotionHandler::~MotionHandler() {}
 // connect to the gantry
 
 //------------------------------------------
-bool MotionHandler::ConnectGantry()
+bool MotionHandler::ConnectGantry(bool flag)
 {
-    qInfo("connect gantry");
-    gantryConnected=true;
+    if (flag) {
+        qInfo("connect gantry");
+        gantryConnected=true;
+    } else {
+        qInfo("disconnect gantry");
+        gantryConnected=false;
+    }
     return true;
 }
 
 //------------------------------------------
 bool MotionHandler::DisconnectGantry()
 {
-    qInfo("disconnect gantry");
-    gantryConnected=false;
+    return ConnectGantry(false);
+}
+
+//------------------------------------------
+bool MotionHandler::EnableAxes(bool flag)
+{
+    if (flag) {
+        qInfo("enable axes");
+        xAxisEnabled=true;
+        yAxisEnabled=true;
+        zAxisEnabled=true;
+        uAxisEnabled=true;
+    } else {
+        qInfo("disable axes");
+        xAxisEnabled=false;
+        yAxisEnabled=false;
+        zAxisEnabled=false;
+        uAxisEnabled=false;
+    }
     return true;
 }
 
 //------------------------------------------
-bool MotionHandler::EnableAxes()
+bool MotionHandler::EnableXAxis(bool flag)
 {
-    qInfo("enable axes");
-    axesEnabled=true;
-    xAxisEnabled=true;
-    yAxisEnabled=true;
-    zAxisEnabled=true;
-    uAxisEnabled=true;
+    if (flag) {
+        qInfo("enable x axis");
+        xAxisEnabled=true;
+    } else {
+        qInfo("disable x axis");
+        xAxisEnabled=false;
+    }
     return true;
 }
 
 //------------------------------------------
-bool MotionHandler::EnableXAxis()
+bool MotionHandler::EnableYAxis(bool flag)
 {
-    qInfo("enable x axis");
-    xAxisEnabled=true;
+    if (flag) {
+        qInfo("enable y axis");
+        yAxisEnabled=true;
+    } else {
+        qInfo("disable y axis");
+        yAxisEnabled=false;
+    }
     return true;
 }
 
 //------------------------------------------
-bool MotionHandler::EnableYAxis()
+bool MotionHandler::EnableZAxis(bool flag)
 {
-    qInfo("enable y axis");
-    yAxisEnabled=true;
+    if (flag) {
+        qInfo("enable z axis");
+        zAxisEnabled=true;
+    } else {
+        qInfo("disable z axis");
+        zAxisEnabled=false;
+    }
     return true;
 }
 
 //------------------------------------------
-bool MotionHandler::EnableZAxis()
+bool MotionHandler::EnableUAxis(bool flag)
 {
-    qInfo("enable z axis");
-    zAxisEnabled=true;
-    return true;
-}
-
-//------------------------------------------
-bool MotionHandler::EnableUAxis()
-{
-    qInfo("enable u axis");
-    uAxisEnabled=true;
+    if (flag) {
+        qInfo("enable u axis");
+        uAxisEnabled=true;
+    } else {
+        qInfo("disable u axis");
+        uAxisEnabled=false;
+    }
     return true;
 }
 
 //------------------------------------------
 bool MotionHandler::DisableAxes()
 {
-    qInfo("disable axes");
-    axesEnabled=false;
-    xAxisEnabled=false;
-    yAxisEnabled=false;
-    zAxisEnabled=false;
-    uAxisEnabled=false;
-    return true;
+    return EnableAxes(false);
 }
 
 //------------------------------------------
 bool MotionHandler::DisableXAxis()
 {
-    qInfo("disable x axis");
-    xAxisEnabled=false;
-    return true;
+    return EnableXAxis(false);
 }
 
 //------------------------------------------
 bool MotionHandler::DisableYAxis()
 {
-    qInfo("disable y axis");
-    yAxisEnabled=false;
-    return true;
+    return EnableYAxis(false);
 }
 
 //------------------------------------------
 bool MotionHandler::DisableZAxis()
 {
-    qInfo("disable z axis");
-    zAxisEnabled=false;
-    return true;
+    return EnableZAxis(false);
 }
 
 //------------------------------------------
 bool MotionHandler::DisableUAxis()
 {
-    qInfo("disable u axis");
-    uAxisEnabled=false;
-    return true;
+    return EnableUAxis(false);
 }
 
 //******************************************

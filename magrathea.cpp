@@ -26,6 +26,13 @@ Magrathea::Magrathea(QWidget *parent) :
     ui->leftTabWidget->setCurrentWidget(outputLogTextEdit);
 
     //------------------------------------------
+    #ifdef VANCOUVER
+        qInfo("in Vancouver with Aerotech A3200 gantry");
+    #else
+        qInfo("code development with no gantry");
+    #endif
+
+    //------------------------------------------
     //camera
 
     //create camera objects
@@ -46,11 +53,13 @@ Magrathea::Magrathea(QWidget *parent) :
     //gantry
     autoRepeatDelay=1000;//ms
     autoRepeatInterval=1000;//ms
-    ui->enableAxesBox->setEnabled(false);
+    ui->enableAxesButton->setEnabled(false);
+    ui->disableAxesButton->setEnabled(false);
     ui->xAxisEnableBox->setEnabled(false);
     ui->yAxisEnableBox->setEnabled(false);
     ui->zAxisEnableBox->setEnabled(false);
     ui->uAxisEnableBox->setEnabled(false);
+    enableThings(false);
     //ui->freeRunRadioButton->setChecked(true);
 
     //------------------------------------------
@@ -71,20 +80,25 @@ Magrathea::Magrathea(QWidget *parent) :
     //connect signals and slots
 
     //camera
-    connect(ui->enableCameraBox, SIGNAL(clicked(bool)), this, SLOT(enableCameraBoxClicked(bool)));
+    connect(ui->enableCameraBox, SIGNAL(toggled(bool)), this, SLOT(enableCameraBoxClicked(bool)));
     connect(ui->focusButton,     SIGNAL(clicked(bool)), this, SLOT(focusButtonClicked()));
     connect(ui->captureButton,   SIGNAL(clicked(bool)), this, SLOT(captureButtonClicked()));
 
     //gantry
-    connect(ui->connectGantryBox, SIGNAL(clicked(bool)), this, SLOT(connectGantryBoxClicked(bool)));
-    connect(ui->enableAxesBox,    SIGNAL(clicked(bool)), this, SLOT(enableAxesBoxClicked(bool)));
-    connect(ui->homeAxesButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::Home);
+    connect(ui->connectGantryBox, SIGNAL(toggled(bool)), this, SLOT(connectGantryBoxClicked(bool)));
+    connect(ui->enableAxesButton, SIGNAL(clicked(bool)), this, SLOT(enableAxesClicked(bool)));
+    connect(ui->disableAxesButton,SIGNAL(clicked(bool)), this, SLOT(enableAxesClicked(bool)));
+    connect(ui->xAxisEnableBox,   SIGNAL(toggled(bool)), this, SLOT(enableAxesClicked(bool)));
+    connect(ui->yAxisEnableBox,   SIGNAL(toggled(bool)), this, SLOT(enableAxesClicked(bool)));
+    connect(ui->zAxisEnableBox,   SIGNAL(toggled(bool)), this, SLOT(enableAxesClicked(bool)));
+    connect(ui->uAxisEnableBox,   SIGNAL(toggled(bool)), this, SLOT(enableAxesClicked(bool)));
 
     //joystick
     connect(ui->freeRunRadioButton, SIGNAL(clicked(bool)), this, SLOT(enableJoystickFreeRun(bool)));
     connect(ui->stepRadioButton,    SIGNAL(clicked(bool)), this, SLOT(enableJoystickStepMotion(bool)));
 
     //home axes
+    connect(ui->homeAxesButton,  &QPushButton::clicked, mMotionHandler, &MotionHandler::Home);
     connect(ui->xAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::HomeX);
     connect(ui->yAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::HomeY);
     connect(ui->zAxisHomeButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::HomeZ);
@@ -102,7 +116,7 @@ Magrathea::Magrathea(QWidget *parent) :
     connect(ui->zAxisStepMoveButton, SIGNAL(clicked(bool)), this, SLOT(stepMotion()));
     connect(ui->uAxisStepMoveButton, SIGNAL(clicked(bool)), this, SLOT(stepMotion()));
 
-    //step motion autorepeat
+    //step motion autorepeat box
     connect(ui->xAxisStepRepeatBox, SIGNAL(clicked(bool)), this, SLOT(axisStepRepeatBoxClicked(bool)));
     connect(ui->yAxisStepRepeatBox, SIGNAL(clicked(bool)), this, SLOT(axisStepRepeatBoxClicked(bool)));
     connect(ui->zAxisStepRepeatBox, SIGNAL(clicked(bool)), this, SLOT(axisStepRepeatBoxClicked(bool)));
@@ -168,7 +182,8 @@ void Magrathea::connectGantryBoxClicked(bool checked)
     if (checked)
     {
         if (mMotionHandler->ConnectGantry()) {
-            ui->enableAxesBox->setEnabled(true);
+            ui->enableAxesButton->setEnabled(true);
+            ui->disableAxesButton->setEnabled(true);
             ui->xAxisEnableBox->setEnabled(true);
             ui->yAxisEnableBox->setEnabled(true);
             ui->zAxisEnableBox->setEnabled(true);
@@ -178,12 +193,13 @@ void Magrathea::connectGantryBoxClicked(bool checked)
             qWarning("could not connect to gantry");
         }
     } else {
-        if (mMotionHandler->axesEnabled) {
+        if (mMotionHandler->xAxisEnabled || mMotionHandler->yAxisEnabled || mMotionHandler->zAxisEnabled || mMotionHandler->uAxisEnabled) {
             ui->connectGantryBox->setChecked(true);
             qWarning("disable axes before disconnecting from gantry");
         } else {
             if(mMotionHandler->DisconnectGantry()) {
-                ui->enableAxesBox->setEnabled(false);
+                ui->enableAxesButton->setEnabled(false);
+                ui->disableAxesButton->setEnabled(false);
                 ui->xAxisEnableBox->setEnabled(false);
                 ui->yAxisEnableBox->setEnabled(false);
                 ui->zAxisEnableBox->setEnabled(false);
@@ -199,37 +215,68 @@ void Magrathea::connectGantryBoxClicked(bool checked)
 //------------------------------------------
 //enable axes
 //proxy function to handle the EnableAxes and DisableAxes functions from MotionHandler
-void Magrathea::enableAxesBoxClicked(bool checked)
+void Magrathea::enableAxesClicked(bool checked)
 {
-    if (checked)
-    {
-        if (mMotionHandler->gantryConnected) {
-            if (mMotionHandler->EnableAxes()) {
-                ui->connectGantryBox->setEnabled(false);
-            } else {
-                ui->enableAxesBox->setChecked(false);
-                qWarning("could not enable axes");
-            }
-        } else {
-            ui->enableAxesBox->setChecked(false);
-            qWarning("connect to the gantry before enabling axes");
-        }
+    if (sender() == ui->enableAxesButton) {
+        ui->xAxisEnableBox->setChecked(true);
+        ui->yAxisEnableBox->setChecked(true);
+        ui->zAxisEnableBox->setChecked(true);
+        ui->uAxisEnableBox->setChecked(true);
+    } else if (sender() == ui->disableAxesButton) {
+        ui->xAxisEnableBox->setChecked(false);
+        ui->yAxisEnableBox->setChecked(false);
+        ui->zAxisEnableBox->setChecked(false);
+        ui->uAxisEnableBox->setChecked(false);
+    } else if (sender() == ui->xAxisEnableBox) mMotionHandler->EnableXAxis(checked);
+      else if (sender() == ui->yAxisEnableBox) mMotionHandler->EnableYAxis(checked);
+      else if (sender() == ui->zAxisEnableBox) mMotionHandler->EnableZAxis(checked);
+      else if (sender() == ui->uAxisEnableBox) mMotionHandler->EnableUAxis(checked);
+
+    //check enabled axes
+    if (mMotionHandler->xAxisEnabled || mMotionHandler->yAxisEnabled || mMotionHandler->zAxisEnabled || mMotionHandler->uAxisEnabled) {
+        ui->connectGantryBox->setEnabled(false);
+        enableThings(true);
     } else {
-        if (mMotionHandler->DisableAxes()) {
-            ui->enableAxesBox->setChecked(false);
-            ui->connectGantryBox->setEnabled(true);
-        } else {
-            ui->enableAxesBox->setEnabled(true);
-            qWarning("could not disable axes");
-        }
+        ui->connectGantryBox->setEnabled(true);
+        enableThings(false);
     }
+
+    return;
 }
 
+//------------------------------------------
+//once the gantry is connected and the axes are enables, enable things
+void Magrathea::enableThings(bool checked) {
+
+    //joystick
+    ui->leftTabWidget->widget(0)->setEnabled(checked);
+
+    //motion
+    ui->xAxisHomeButton->setEnabled(checked);
+    ui->yAxisHomeButton->setEnabled(checked);
+    ui->zAxisHomeButton->setEnabled(checked);
+    ui->uAxisHomeButton->setEnabled(checked);
+
+    ui->xAxisStepMoveButton->setEnabled(checked);
+    ui->yAxisStepMoveButton->setEnabled(checked);
+    ui->zAxisStepMoveButton->setEnabled(checked);
+    ui->uAxisStepMoveButton->setEnabled(checked);
+
+    ui->xAxisPositionMoveButton->setEnabled(checked);
+    ui->yAxisPositionMoveButton->setEnabled(checked);
+    ui->zAxisPositionMoveButton->setEnabled(checked);
+    ui->uAxisPositionMoveButton->setEnabled(checked);
+
+    return;
+}
+
+
 //******************************************
-//joystick
+//motion
 
 //------------------------------------------
-//free run
+//enable joystick free run
+//re-assign joystick buttons to free runnning
 void Magrathea::enableJoystickFreeRun(bool checked)
 {
     if (checked)
@@ -291,7 +338,8 @@ void Magrathea::freeRun()
 }
 
 //------------------------------------------
-//step motion
+//enable joystick step motion
+//re assign joystick buttons to step motion
 void Magrathea::enableJoystickStepMotion(bool checked)
 {
     if (checked)
@@ -318,22 +366,30 @@ void Magrathea::enableJoystickStepMotion(bool checked)
         connect(ui->negativeUButton, SIGNAL(clicked(bool)), this, SLOT(stepMotion()));
 
         //set repeat delay
+        ui->xAxisStepMoveButton->setAutoRepeatDelay(autoRepeatDelay);
         ui->positiveXButton->setAutoRepeatDelay(autoRepeatDelay);
         ui->negativeXButton->setAutoRepeatDelay(autoRepeatDelay);
+        ui->yAxisStepMoveButton->setAutoRepeatDelay(autoRepeatDelay);
         ui->positiveYButton->setAutoRepeatDelay(autoRepeatDelay);
         ui->negativeYButton->setAutoRepeatDelay(autoRepeatDelay);
+        ui->zAxisStepMoveButton->setAutoRepeatDelay(autoRepeatDelay);
         ui->positiveZButton->setAutoRepeatDelay(autoRepeatDelay);
         ui->negativeZButton->setAutoRepeatDelay(autoRepeatDelay);
+        ui->uAxisStepMoveButton->setAutoRepeatDelay(autoRepeatDelay);
         ui->positiveUButton->setAutoRepeatDelay(autoRepeatDelay);
         ui->negativeUButton->setAutoRepeatDelay(autoRepeatDelay);
 
         //set repeat interval
+        ui->xAxisStepMoveButton->setAutoRepeatInterval(autoRepeatInterval);
         ui->positiveXButton->setAutoRepeatInterval(autoRepeatInterval);
         ui->negativeXButton->setAutoRepeatInterval(autoRepeatInterval);
+        ui->yAxisStepMoveButton->setAutoRepeatInterval(autoRepeatInterval);
         ui->positiveYButton->setAutoRepeatInterval(autoRepeatInterval);
         ui->negativeYButton->setAutoRepeatInterval(autoRepeatInterval);
+        ui->zAxisStepMoveButton->setAutoRepeatInterval(autoRepeatInterval);
         ui->positiveZButton->setAutoRepeatInterval(autoRepeatInterval);
         ui->negativeZButton->setAutoRepeatInterval(autoRepeatInterval);
+        ui->uAxisStepMoveButton->setAutoRepeatInterval(autoRepeatInterval);
         ui->positiveUButton->setAutoRepeatInterval(autoRepeatInterval);
         ui->negativeUButton->setAutoRepeatInterval(autoRepeatInterval);
     }
@@ -360,6 +416,7 @@ void Magrathea::stepMotion()
         mMotionHandler->MoveUBy(+1*abs(ui->uAxisStepLineEdit->text().toDouble()), ui->uAxisSpeedLineEdit->text().toDouble());
     else if (sender() == ui->negativeUButton)
         mMotionHandler->MoveUBy(-1*abs(ui->uAxisStepLineEdit->text().toDouble()), ui->uAxisSpeedLineEdit->text().toDouble());
+
     //naviagtion panel
     else if  (sender() == ui->xAxisStepMoveButton)
         mMotionHandler->MoveXBy(ui->xAxisStepLineEdit->text().toDouble(), ui->xAxisSpeedLineEdit->text().toDouble());
@@ -373,7 +430,7 @@ void Magrathea::stepMotion()
 }
 
 //------------------------------------------
-//step motion proxy function to pass arguments to the MotionHandler
+//position move proxy function to pass arguments to the MotionHandler
 void Magrathea::positionMove()
 {
     if (sender() == ui->xAxisPositionMoveButton)
@@ -387,23 +444,27 @@ void Magrathea::positionMove()
     return;
 }
 
-//******************************************
+//------------------------------------------
 //step motion autorepeat
 void Magrathea::axisStepRepeatBoxClicked(bool checked)
 {
     if (sender() == ui->xAxisStepRepeatBox) {
+        ui->xAxisStepMoveButton->setAutoRepeat(checked);
         ui->positiveXButton->setAutoRepeat(checked);
         ui->negativeXButton->setAutoRepeat(checked);
     }
     else if (sender() == ui->yAxisStepRepeatBox) {
+        ui->yAxisStepMoveButton->setAutoRepeat(checked);
         ui->positiveYButton->setAutoRepeat(checked);
         ui->negativeYButton->setAutoRepeat(checked);
     }
     else if (sender() == ui->zAxisStepRepeatBox) {
+        ui->zAxisStepMoveButton->setAutoRepeat(checked);
         ui->positiveZButton->setAutoRepeat(checked);
         ui->negativeZButton->setAutoRepeat(checked);
     }
     else if (sender() == ui->uAxisStepRepeatBox) {
+        ui->uAxisStepMoveButton->setAutoRepeat(checked);
         ui->positiveUButton->setAutoRepeat(checked);
         ui->negativeUButton->setAutoRepeat(checked);
     }

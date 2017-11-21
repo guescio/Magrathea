@@ -33,15 +33,16 @@ private slots:
 
     //gantry
     void connectGantryBoxClicked(bool checked);
-    void enableAxesBoxClicked(bool checked);
+    void enableAxesClicked(bool checked);
+    void enableThings(bool checked);
 
-    //joystick
+    //motion
     void enableJoystickFreeRun(bool checked);
     void freeRun();
     void enableJoystickStepMotion(bool checked);
     void stepMotion();
-    void axisStepRepeatBoxClicked(bool checked);
     void positionMove();
+    void axisStepRepeatBoxClicked(bool checked);
 
 private:
     Ui::Magrathea *ui;

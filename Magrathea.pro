@@ -39,7 +39,6 @@ FORMS += \
 win32 : exists(C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/A3200.h) {
         SOURCES += Gantry_Vancouver.cpp
         HEADERS += Gantry_Vancouver.h
-        GANTRY = A3200
-        LOCATION = TRIUMF
-        message(in Vancouver with Aerotech A3200 gantry)
+        DEFINES += AEROTECH
+        DEFINES += VANCOUVER
 }

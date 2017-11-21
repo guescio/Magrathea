@@ -13,7 +13,6 @@ public:
 	~MotionHandler();
 
     bool gantryConnected;
-    bool axesEnabled;
     bool xAxisEnabled;
     bool yAxisEnabled;
     bool zAxisEnabled;
@@ -23,15 +22,15 @@ public slots:
 
     //******************************************
     // connect to the gantry
-    virtual bool ConnectGantry();
+    virtual bool ConnectGantry(bool flag=true);
     virtual bool DisconnectGantry();
 
     // enable axes before any movement
-    virtual bool EnableAxes();
-    virtual bool EnableXAxis();
-    virtual bool EnableYAxis();
-    virtual bool EnableZAxis();
-    virtual bool EnableUAxis();
+    virtual bool EnableAxes(bool flag=true);
+    virtual bool EnableXAxis(bool flag=true);
+    virtual bool EnableYAxis(bool flag=true);
+    virtual bool EnableZAxis(bool flag=true);
+    virtual bool EnableUAxis(bool flag=true);
     virtual bool DisableAxes();
     virtual bool DisableXAxis();
     virtual bool DisableYAxis();
