@@ -1,3 +1,5 @@
+#pragma once
+#include <vector>
 #include <QWidget>
 
 class MotionHandler : public QWidget
@@ -9,83 +11,111 @@ public:
 	MotionHandler();
 	~MotionHandler();
 
-    bool gantryConnected;
-    bool xAxisEnabled;
-    bool yAxisEnabled;
-    bool zAxisEnabled;
-    bool uAxisEnabled;
-
 public slots:
 
-    //******************************************
-    // connect to the gantry
-    virtual bool connectGantry(bool flag=true);
-    virtual bool disconnectGantry();
+    // Turn the gantry on
+    virtual void ActivateGantry();
 
-    // enable axes before any movement
-    virtual bool enableAxes(bool flag=true);
-    virtual bool enableXAxis(bool flag=true);
-    virtual bool enableYAxis(bool flag=true);
-    virtual bool enableZAxis(bool flag=true);
-    virtual bool enableUAxis(bool flag=true);
-    virtual bool disableAxes();
-    virtual bool disableXAxis();
-    virtual bool disableYAxis();
-    virtual bool disableZAxis();
-    virtual bool disableUAxis();
+    // Need to activate axes before machine can be used
+    virtual void ActivateAllAxes();
 
-    //******************************************
-    // gantry current position
-    virtual std::vector<double> whereAmI();
+    ///////////////////////////////
+    // Motion commands
 
-    //******************************************
-    // home axes
-    virtual bool home();
-    virtual bool homeX();
-    virtual bool homeY();
-    virtual bool homeZ();
-    virtual bool homeU();
+    // Home all axes
+    virtual void Home();
 
-    //******************************************
-    // absolute motion
-    // NOTE units in mm, mm/s and deg/s
-    virtual bool moveTo(double x, double y, double z, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveXTo(double x, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveYTo(double y, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveZTo(double z, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveUTo(double u, double speed=std::numeric_limits<double>::quiet_NaN());
+    // Home individual axis (X)
+    virtual void HomeX();
 
-    //******************************************
-    // motion relative to current location
-    // NOTE units in mm, mm/s and deg/s
-    virtual bool moveBy(double x=0, double y=0, double z=0, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveXBy(double x=0, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveYBy(double y=0, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveZBy(double z=0, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveUBy(double u=0, double speed=std::numeric_limits<double>::quiet_NaN());
+    // Home individual axis (Y)
+    virtual void HomeY();
 
-    //******************************************
-    // free run
-    virtual bool runX(double direction, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool endRunX();
-    virtual bool runY(double direction, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool endRunY();
-    virtual bool runZ(double direction, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool endRunZ();
-    virtual bool runU(double direction, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool endRunU();
+    // Home individual axis (Z)
+    virtual void HomeZ();
 
-    //******************************************
-    // default speeds
-    // NOTE default unit is mm/s
-    /*
-    virtual void SetSpeedDefaults(double speedX=std::numeric_limits<double>::quiet_NaN(),
-                                  double speedY=std::numeric_limits<double>::quiet_NaN(),
-                                  double speedZ=std::numeric_limits<double>::quiet_NaN(),
-                                  double speedU=std::numeric_limits<double>::quiet_NaN());
-    virtual void SetSpeedX(double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual void SetSpeedY(double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual void SetSpeedZ(double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual void SetSpeedU(double speed=std::numeric_limits<double>::quiet_NaN());
-    */
+    // Home individual axis (U)
+    virtual void HomeU();
+
+    // Connect joystick
+    virtual void ConnectJoystick();
+
+    // Disconnect joystick
+    virtual void DisconnectJoystick();
+
+    // Move to absolute location specified by x, y, z
+    // Note default unit is mm
+    virtual void MoveTo(double x, double y, double z, double u = 0, double speed = 75);
+
+    // Move only in z (useful for autofocus)
+    virtual void MoveZTo(double z, double speed = NAN);
+
+    // Move relative to current location by an amount x, y, z
+    // Note default unit is mm
+    virtual void MoveBy(double x, double y, double z, double u = 0, double speed = 75);
+
+    // Move only in z (useful for autofocus)
+    virtual void MoveZBy(double z, double speed = NAN);
+
+    // Begin free running (x direction)
+    virtual void RunX();
+
+    // Begin free running (negative x direction)
+    virtual void RunXNeg();
+
+    // Stop free running (x direction)
+    virtual void EndRunX();
+
+    // Begin free running (y direction)
+    virtual void RunY();
+
+    // Begin free running (negative y direction)
+    virtual void RunYNeg();
+
+    // Stop free running (y direction)
+    virtual void EndRunY();
+
+    // Begin free running (z direction)
+    virtual void RunZ();
+
+    // Begin free running (negative z direction)
+    virtual void RunZNeg();
+
+    // Stop free running (z direction)
+    virtual void EndRunZ();
+
+    // Begin free running (rotational direction)
+    virtual void RunU();
+
+    // Begin free running (rotate the other way)
+    virtual void RunUNeg();
+
+    // Stop free running (rotational direction)
+    virtual void EndRunU();
+
+    ///////////////////////////////
+    // Configuration commands
+
+    // Set default speed for each axis
+    virtual void SetSpeedDefaults(double speedX, double speedY, double speedZ, double speedU);
+
+    // Set speed for x axis
+    virtual void SetSpeedX(double speed);
+
+    // Set speed for y axis
+    virtual void SetSpeedY(double speed);
+
+    // Set speed for z axis
+    virtual void SetSpeedZ(double speed);
+
+    // Set speed for u axis
+    virtual void SetSpeedU(double speed);
+
+    ///////////////////////////////
+    // Status commands
+
+    // Returns current location as vector in x, y, z, u
+    virtual std::vector<double> WhereAmI();
+
+
 };

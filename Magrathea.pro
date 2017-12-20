@@ -1,4 +1,4 @@
-#-------------------------------------------------
+#-------------------------------------------------DERS
 #
 # Project created by QtCreator 2017-10-07T07:29:37
 #
@@ -26,19 +26,39 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         magrathea.cpp \
-        MotionHandler.cpp
+        MotionHandler.cpp \
+    PetalAlgManager.cpp \
+    gluehandler.cpp
 
 HEADERS += \
         magrathea.h \
-        MotionHandler.h
+        MotionHandler.h \
+    PetalAlgManager.h \
+    gluehandler.h \
 
 FORMS += \
         magrathea.ui
 
+
 #Vancouver
+
 win32 : exists(C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/A3200.h) {
-        SOURCES += AerotechMotionHandler.cpp
-        HEADERS += AerotechMotionHandler.h
+
+
+        INCLUDEPATH += "C:\Program Files (x86)\Aerotech\A3200\CLibrary\Include"
+        INCLUDEPATH += "C:\Program Files (x86)\Aerotech\A3200\CLibrary\Bin"
+        INCLUDEPATH += "C:\Program Files (x86)\Aerotech\A3200\CLibrary\Bin64"
+
+        ##win32:
+        LIBS += -L'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Lib/' -lA3200C
+
+
+        SOURCES += Gantry_Vancouver.cpp
+
+        HEADERS += Gantry_Vancouver.h
+
         DEFINES += AEROTECH
+
         DEFINES += VANCOUVER
+
 }

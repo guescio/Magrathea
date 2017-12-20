@@ -105,9 +105,9 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
-       <widget class="QWidget" name="joystickTab">
+       <widget class="QWidget" name="tab">
         <attribute name="title">
          <string>joystick</string>
         </attribute>
@@ -128,16 +128,23 @@
             </spacer>
            </item>
            <item>
-            <widget class="QRadioButton" name="freeRunRadioButton">
+            <widget class="QRadioButton" name="radioButton">
              <property name="text">
               <string>free run</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="stepRadioButton">
+            <widget class="QRadioButton" name="radioButton_2">
              <property name="text">
               <string>step</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="connectJoystickButton">
+             <property name="text">
+              <string>connect joystick</string>
              </property>
             </widget>
            </item>
@@ -281,7 +288,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="positionTab">
+       <widget class="QWidget" name="tab_5">
         <attribute name="title">
          <string>position</string>
         </attribute>
@@ -460,12 +467,6 @@
    </item>
    <item row="0" column="1">
     <widget class="QTabWidget" name="rightTabWidget">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>600</width>
@@ -473,11 +474,11 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
-       <string>navigation</string>
+       <string>Navigation</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="0" column="0">
@@ -505,21 +506,14 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="enableAxesButton">
+            <widget class="QCheckBox" name="enableAxesBox">
              <property name="text">
               <string>enable axes</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="disableAxesButton">
-             <property name="text">
-              <string>disable axes</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="axesHomeButton">
+            <widget class="QPushButton" name="homeAxesButton">
              <property name="text">
               <string>home axes</string>
              </property>
@@ -638,7 +632,7 @@
              </widget>
             </item>
             <item row="2" column="4">
-             <widget class="QCheckBox" name="xAxisStepRepeatBox">
+             <widget class="QCheckBox" name="xAxisStepContinousBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -907,7 +901,7 @@
              </spacer>
             </item>
             <item row="2" column="4">
-             <widget class="QCheckBox" name="yAxisStepRepeatBox">
+             <widget class="QCheckBox" name="yAxisStepContinousBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -957,6 +951,9 @@
             </item>
             <item row="1" column="0">
              <widget class="QPushButton" name="yAxisHomeButton">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1144,7 +1141,7 @@
              </widget>
             </item>
             <item row="2" column="4">
-             <widget class="QCheckBox" name="zAxisStepRepeatBox">
+             <widget class="QCheckBox" name="zAxisStepContinousBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1202,7 +1199,7 @@
              </widget>
             </item>
             <item row="2" column="4">
-             <widget class="QCheckBox" name="uAxisStepRepeatBox">
+             <widget class="QCheckBox" name="uAxisStepContinousBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1415,6 +1412,400 @@
         </layout>
        </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="PickAndPlaceTab">
+      <attribute name="title">
+       <string>Pick and Place</string>
+      </attribute>
+      <widget class="QGroupBox" name="SensorLocationBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>341</width>
+         <height>171</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Sensor Location</string>
+       </property>
+       <layout class="QGridLayout" name="PickandPlace">
+        <item row="0" column="0" colspan="2">
+         <widget class="QComboBox" name="SensorPullDown">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>14</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="currentText">
+           <string>Sensor</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>Sensor</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R0</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R1</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R2</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R3-Top</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R3-Bottom</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R4-Top</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R4-Bottom</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R5-Top</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R5-Bottom</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="SensorFirstFoundButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="acceptDrops">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>First Fiducial Found</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="SensorSecondFoundButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Second Fiducial Found</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" rowspan="2">
+         <widget class="QPushButton" name="PickUpButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>GO</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>5</width>
+            <height>12</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+       <zorder>PickUpButton</zorder>
+       <zorder>SensorPullDown</zorder>
+       <zorder>SensorFirstFoundButton</zorder>
+       <zorder>SensorSecondFoundButton</zorder>
+      </widget>
+      <widget class="QGroupBox" name="ReviewPetalBox">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>150</y>
+         <width>221</width>
+         <height>171</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Review Petal</string>
+       </property>
+       <layout class="QGridLayout" name="Review">
+        <item row="4" column="0">
+         <widget class="QPushButton" name="PreviousFidButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Previous</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QPushButton" name="NextFidButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Next</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QPushButton" name="ReviewButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>5</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="acceptDrops">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>GO</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QComboBox" name="FiducialPullDown">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>1000</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>1000</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="currentText">
+           <string>Fiducial</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Fiducial</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Top-Left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Top-Right</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bottom-Left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bottom-Right</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QComboBox" name="PetalPullDown">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>10</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="currentText">
+           <string>Sensor</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Sensor</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R0</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R1</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R2</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R3-Top</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R3-Bottom</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R4-Top</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R4-Bottom</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R5-Top</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R5-Bottom</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="PetalLocationBox">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>9</y>
+         <width>581</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Petal Location</string>
+       </property>
+       <layout class="QGridLayout" name="PetalLocation">
+        <item row="0" column="2">
+         <widget class="QCheckBox" name="InnerFoundButton">
+          <property name="text">
+           <string>Inner Fiducial Found</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="InnerFiducialButton">
+          <property name="text">
+           <string>Go To Inner Fiducial</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="OuterFiducialButton">
+          <property name="text">
+           <string>Go To Outer Fiducial</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="OuterFoundButton">
+          <property name="text">
+           <string>Outer Fiducial Found</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </widget>
    </item>
