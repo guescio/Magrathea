@@ -22,8 +22,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     case QtWarningMsg:
         fprintf(stderr, "WARNING: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
         if(Magrathea::outputLogTextEdit != 0)
-            //message.sprintf("WARNING: %s (%s:%u, %s)", localMsg.constData(), context.file, context.line, context.function);
-            message.sprintf("WARNING: %s", localMsg.constData());
+            message.sprintf("WARNING: %s (%s:%u, %s)", localMsg.constData(), context.file, context.line, context.function);
             Magrathea::outputLogTextEdit->append(message);
         break;
     case QtCriticalMsg:

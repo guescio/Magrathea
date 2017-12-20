@@ -13,6 +13,9 @@ class QCameraViewfinder;
 class QCameraImageCapture;
 class QVBoxLayout;
 class MotionHandler;
+class Gantry_Vancouver;
+class PetalAlgManager;
+class GlueHandler;
 
 class Magrathea : public QWidget
 {
@@ -27,22 +30,52 @@ public:
 private slots:
 
     //camera
-    void enableCameraBoxClicked(bool checked);
+    void enableCameraBoxToggled(bool toggled);
     void focusButtonClicked();
     void captureButtonClicked();
 
-    //gantry
-    void connectGantryBoxClicked(bool checked);
-    void enableAxesClicked(bool checked);
-    void enableThings(bool checked);
+    //joystick buttons
+    void connectJoystickBoxToggled(bool toggled);
 
-    //motion
-    void enableJoystickFreeRun(bool checked);
-    void freeRun();
-    void enableJoystickStepMotion(bool checked);
-    void stepMotion();
-    void positionMove();
-    void axisStepRepeatBoxClicked(bool checked);
+    //x axis
+    void positiveXButtonClicked();
+    void negativeXButtonClicked();
+    void xAxisStepContinousBoxToggled(bool flag);
+
+    //y axis
+    void positiveYButtonClicked();
+    void negativeYButtonClicked();
+    void yAxisStepContinousBoxToggled(bool flag);
+
+    //z axis
+    void positiveZButtonClicked();
+    void negativeZButtonClicked();
+    void zAxisStepContinousBoxToggled(bool flag);
+
+    //u axis
+    void positiveUButtonClicked();
+    void negativeUButtonClicked();
+    void uAxisStepContinousBoxToggled(bool flag);
+
+    // for algorithms
+    void InnerFiducialButtonPressed();
+    void InnerFoundButtonToggled(bool flag);
+    void OuterFiducialButtonPressed();
+    void OuterFoundButtonToggled(bool flag);
+
+    void SensorPullDownActivated(int index);
+    void SensorFirstFoundButtonToggled(bool flag);
+    void SensorSecondFoundButtonToggled(bool flag);
+    void PickUpButtonPressed();
+
+    void PetalPullDownActivated(int index);
+    void FiducialPullDownActivated(int index);
+    void ReviewButtonPressed();
+    void PreviousFidButtonPressed();
+    void NextFidButtonPressed();
+
+    void glueButtonClicked();
+
 
 private:
     Ui::Magrathea *ui;
@@ -52,9 +85,21 @@ private:
     QCameraImageCapture *mCameraImageCapture;
     QVBoxLayout *mCameraLayout;
     MotionHandler *mMotionHandler;
+    Gantry_Vancouver *mGantryVancouver;
+
+    PetalAlgManager * mPetalManager;
+    //GlueHandler * mGlueHandler;
 
     int autoRepeatDelay;
-    int autoRepeatInterval;
+
+    // Step sizes in mm for motion
+    double mStepDefault;
+    double mStepSmall;
+    double mStepTiny;
+    double mStep;
+
 };
 
+
 #endif // MAGRATHEA_H
+
