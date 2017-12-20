@@ -27,43 +27,38 @@ SOURCES += \
         main.cpp \
         magrathea.cpp \
         MotionHandler.cpp \
-        Gantry_Vancouver.cpp \
     PetalAlgManager.cpp \
     gluehandler.cpp
 
 HEADERS += \
         magrathea.h \
         MotionHandler.h \
-        Gantry_Vancouver.h \
     PetalAlgManager.h \
     gluehandler.h \
-    gantry.h
 
 FORMS += \
         magrathea.ui
 
 
-#DEFINES -= UNICODE
+#Vancouver
 
-INCLUDEPATH += "C:\Program Files (x86)\Aerotech\A3200\CLibrary\Include"
-INCLUDEPATH += "C:\Program Files (x86)\Aerotech\A3200\CLibrary\Bin"
-INCLUDEPATH += "C:\Program Files (x86)\Aerotech\A3200\CLibrary\Bin64"
+win32 : exists(C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/A3200.h) {
 
-##win32:
-LIBS += -L'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Lib/' -lA3200C
 
-#INCLUDEPATH += 'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Lib'
-#DEPENDPATH += 'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Lib'
+        INCLUDEPATH += "C:\Program Files (x86)\Aerotech\A3200\CLibrary\Include"
+        INCLUDEPATH += "C:\Program Files (x86)\Aerotech\A3200\CLibrary\Bin"
+        INCLUDEPATH += "C:\Program Files (x86)\Aerotech\A3200\CLibrary\Bin64"
 
-#PRE_TARGETDEPS += $$PWD/'../../../../../Program Files (x86)/Aerotech/A3200/CLibrary/Lib/A3200C.lib'
+        ##win32:
+        LIBS += -L'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Lib/' -lA3200C
 
-##win32:!win32-g++: PRE_TARGETDEPS += $$PWD/'../../../../../Program Files (x86)/Aerotech/A3200/CLibrary/Lib/A3200C.lib'
-##else:win32-g++: PRE_TARGETDEPS += $$PWD/'../../../../../Program Files (x86)/Aerotech/A3200/CLibrary/Lib/libA3200C.a'
 
-##LIBS += 'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Bin/A3200C.dll'
-##LIBS += 'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Bin/A32Cmplr.dll'
-##LIBS += 'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Bin/A32Sys.dll'
-##LIBS += 'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Bin/AerUtilities.dll'
-##LIBS += 'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Bin/LicenseDecoder.dll'
+        SOURCES += Gantry_Vancouver.cpp
 
-#HEADERS += 'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/A3200.h'
+        HEADERS += Gantry_Vancouver.h
+
+        DEFINES += AEROTECH
+
+        DEFINES += VANCOUVER
+
+}

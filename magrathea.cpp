@@ -12,7 +12,7 @@
 #include <cmath>
 #ifdef VANCOUVER
 
-*include <Gantry_Vancouver.h>
+#include <Gantry_Vancouver.h>
 
 #endif
 #include <PetalAlgManager.h>
