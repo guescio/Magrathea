@@ -526,6 +526,13 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="resetErrorButton">
+             <property name="text">
+              <string>reset error</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="horizontalSpacer_13">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>

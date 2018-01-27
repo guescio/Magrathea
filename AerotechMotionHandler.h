@@ -23,6 +23,10 @@ public slots:
     virtual bool connectGantry(bool flag=true);
     virtual bool disconnectGantry();
 
+    //******************************************
+    // acknowledge gantry motion errors
+    virtual bool acknowledgeMotionFaultGantry();
+
     // enable axes before any movement
     virtual bool enableAxes(bool flag=true);
     virtual bool enableXAxis(bool flag=true);

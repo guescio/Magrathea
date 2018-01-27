@@ -63,6 +63,7 @@ Magrathea::Magrathea(QWidget *parent) :
     ui->yAxisEnableBox->setEnabled(false);
     ui->zAxisEnableBox->setEnabled(false);
     ui->uAxisEnableBox->setEnabled(false);
+    ui->resetErrorButton->setEnabled(false);
     enableAxesClicked(false);
     //ui->freeRunRadioButton->setChecked(true);
 
@@ -96,6 +97,7 @@ Magrathea::Magrathea(QWidget *parent) :
     connect(ui->yAxisEnableBox,   SIGNAL(toggled(bool)), this, SLOT(enableAxesClicked(bool)));
     connect(ui->zAxisEnableBox,   SIGNAL(toggled(bool)), this, SLOT(enableAxesClicked(bool)));
     connect(ui->uAxisEnableBox,   SIGNAL(toggled(bool)), this, SLOT(enableAxesClicked(bool)));
+    connect(ui->resetErrorButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::acknowledgeMotionFaultGantry);
 
     //joystick
     connect(ui->freeRunRadioButton, SIGNAL(clicked(bool)), this, SLOT(enableJoystickFreeRun(bool)));
@@ -192,6 +194,7 @@ void Magrathea::connectGantryBoxClicked(bool checked)
             ui->yAxisEnableBox->setEnabled(true);
             ui->zAxisEnableBox->setEnabled(true);
             ui->uAxisEnableBox->setEnabled(true);
+            ui->resetErrorButton->setEnabled(true);
         } else {
             ui->connectGantryBox->setChecked(false);
             qWarning("could not connect to gantry");
@@ -208,6 +211,7 @@ void Magrathea::connectGantryBoxClicked(bool checked)
                 ui->yAxisEnableBox->setEnabled(false);
                 ui->zAxisEnableBox->setEnabled(false);
                 ui->uAxisEnableBox->setEnabled(false);
+                ui->resetErrorButton->setEnabled(false);
             } else {
                 ui->connectGantryBox->setChecked(true);
                 qWarning("could not disconnect from gantry");
