@@ -80,17 +80,17 @@ private:
 
     A3200Handle gantry;
 
-    AXISMASK xaxis;
-    AXISINDEX xindex;
+    AXISMASK xAxis;
+    AXISINDEX xIndex;
 
-    AXISMASK yaxis;
-    AXISINDEX yindex;
+    AXISMASK yAxis;
+    AXISINDEX yIndex;
 
-    AXISMASK zaxis;
-    AXISINDEX zindex;
+    AXISMASK zAxis;
+    AXISINDEX zIndex;
 
-    AXISMASK uaxis;
-    AXISINDEX uindex;
+    AXISMASK uAxis;
+    AXISINDEX uIndex;
 
     AXISMASK allAxes;
     AXISMASK xyAxes;

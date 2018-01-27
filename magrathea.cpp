@@ -10,14 +10,13 @@
 #include <MotionHandler.h>
 #include <cmath>
 #ifdef VANCOUVER
-*include <AerotechMotionhandler.h>
+#include <AerotechMotionhandler.h>
 #endif
 
 //******************************************
 Magrathea::Magrathea(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Magrathea),
-    mMotionHandler(new MotionHandler)
+    ui(new Ui::Magrathea)
 {
     ui->setupUi(this);
 
@@ -31,8 +30,10 @@ Magrathea::Magrathea(QWidget *parent) :
     //------------------------------------------
     #ifdef VANCOUVER
         qInfo("Vancouver, Aerotech A3200 gantry");
+        mMotionHandler = new AerotechMotionhandler();
     #else
         qInfo("where is your gantry?");
+        mMotionHandler = new MotionHandler();
     #endif
 
     //------------------------------------------
@@ -62,18 +63,18 @@ Magrathea::Magrathea(QWidget *parent) :
     ui->yAxisEnableBox->setEnabled(false);
     ui->zAxisEnableBox->setEnabled(false);
     ui->uAxisEnableBox->setEnabled(false);
-    enableThings(false);
+    enableAxesClicked(false);
     //ui->freeRunRadioButton->setChecked(true);
 
     //------------------------------------------
-    //position
+    //position tab
     ui->xAxisPositionLine2->setReadOnly(true);
     ui->yAxisPositionLine2->setReadOnly(true);
     ui->zAxisPositionLine2->setReadOnly(true);
     ui->uAxisPositionLine2->setReadOnly(true);
 
     //------------------------------------------
-    //navigation
+    //navigation tab
     ui->xAxisPositionLine->setReadOnly(true);
     ui->yAxisPositionLine->setReadOnly(true);
     ui->zAxisPositionLine->setReadOnly(true);
@@ -235,45 +236,50 @@ void Magrathea::enableAxesClicked(bool checked)
       else if (sender() == ui->zAxisEnableBox) mMotionHandler->enableZAxis(checked);
       else if (sender() == ui->uAxisEnableBox) mMotionHandler->enableUAxis(checked);
 
-    //check enabled axes
-    if (mMotionHandler->xAxisEnabled || mMotionHandler->yAxisEnabled || mMotionHandler->zAxisEnabled || mMotionHandler->uAxisEnabled) {
-        ui->connectGantryBox->setEnabled(false);
-        enableThings(true);
-    } else {
-        ui->connectGantryBox->setEnabled(true);
-        enableThings(false);
-    }
-
-    return;
-}
-
-//------------------------------------------
-//once the gantry is connected and the axes are enables, enable things
-void Magrathea::enableThings(bool checked) {
+    //gantry connection
+    ui->connectGantryBox->setEnabled(!(mMotionHandler->xAxisEnabled ||
+                                       mMotionHandler->yAxisEnabled ||
+                                       mMotionHandler->zAxisEnabled ||
+                                       mMotionHandler->uAxisEnabled));
 
     //joystick
-    ui->leftTabWidget->widget(0)->setEnabled(checked);
+    ui->leftTabWidget->widget(0)->setEnabled(mMotionHandler->xAxisEnabled ||
+                                             mMotionHandler->yAxisEnabled ||
+                                             mMotionHandler->zAxisEnabled ||
+                                             mMotionHandler->uAxisEnabled);
+    ui->positiveXButton->setEnabled(mMotionHandler->xAxisEnabled);
+    ui->negativeXButton->setEnabled(mMotionHandler->xAxisEnabled);
+    ui->positiveYButton->setEnabled(mMotionHandler->yAxisEnabled);
+    ui->negativeYButton->setEnabled(mMotionHandler->yAxisEnabled);
+    ui->positiveZButton->setEnabled(mMotionHandler->zAxisEnabled);
+    ui->negativeZButton->setEnabled(mMotionHandler->zAxisEnabled);
+    ui->positiveUButton->setEnabled(mMotionHandler->uAxisEnabled);
+    ui->negativeUButton->setEnabled(mMotionHandler->uAxisEnabled);
 
-    //motion
-    ui->axesHomeButton->setEnabled(checked);
-    ui->xAxisHomeButton->setEnabled(checked);
-    ui->yAxisHomeButton->setEnabled(checked);
-    ui->zAxisHomeButton->setEnabled(checked);
-    ui->uAxisHomeButton->setEnabled(checked);
+    //home
+    ui->axesHomeButton->setEnabled(mMotionHandler->xAxisEnabled ||
+                                   mMotionHandler->yAxisEnabled ||
+                                   mMotionHandler->zAxisEnabled ||
+                                   mMotionHandler->uAxisEnabled);
+    ui->xAxisHomeButton->setEnabled(mMotionHandler->xAxisEnabled);
+    ui->yAxisHomeButton->setEnabled(mMotionHandler->yAxisEnabled);
+    ui->zAxisHomeButton->setEnabled(mMotionHandler->zAxisEnabled);
+    ui->uAxisHomeButton->setEnabled(mMotionHandler->uAxisEnabled);
 
-    ui->xAxisStepMoveButton->setEnabled(checked);
-    ui->yAxisStepMoveButton->setEnabled(checked);
-    ui->zAxisStepMoveButton->setEnabled(checked);
-    ui->uAxisStepMoveButton->setEnabled(checked);
+    //step move
+    ui->xAxisStepMoveButton->setEnabled(mMotionHandler->xAxisEnabled);
+    ui->yAxisStepMoveButton->setEnabled(mMotionHandler->yAxisEnabled);
+    ui->zAxisStepMoveButton->setEnabled(mMotionHandler->zAxisEnabled);
+    ui->uAxisStepMoveButton->setEnabled(mMotionHandler->uAxisEnabled);
 
-    ui->xAxisPositionMoveButton->setEnabled(checked);
-    ui->yAxisPositionMoveButton->setEnabled(checked);
-    ui->zAxisPositionMoveButton->setEnabled(checked);
-    ui->uAxisPositionMoveButton->setEnabled(checked);
+    //position move
+    ui->xAxisPositionMoveButton->setEnabled(mMotionHandler->xAxisEnabled);
+    ui->yAxisPositionMoveButton->setEnabled(mMotionHandler->yAxisEnabled);
+    ui->zAxisPositionMoveButton->setEnabled(mMotionHandler->zAxisEnabled);
+    ui->uAxisPositionMoveButton->setEnabled(mMotionHandler->uAxisEnabled);
 
     return;
 }
-
 
 //******************************************
 //motion

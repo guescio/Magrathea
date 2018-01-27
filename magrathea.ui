@@ -541,7 +541,7 @@
           </layout>
          </item>
          <item row="1" column="0">
-          <widget class="QGroupBox" name="xAxisGroupBox_3">
+          <widget class="QGroupBox" name="xAxisGroupBox">
            <property name="title">
             <string>x axis</string>
            </property>
@@ -758,7 +758,7 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QGroupBox" name="yAxisGroupBox_3">
+          <widget class="QGroupBox" name="yAxisGroupBox">
            <property name="title">
             <string>y axis</string>
            </property>
@@ -972,7 +972,7 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QGroupBox" name="zAxisGroupBox_3">
+          <widget class="QGroupBox" name="zAxisGroupBox">
            <property name="title">
             <string>z axis</string>
            </property>
@@ -1186,7 +1186,7 @@
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QGroupBox" name="uAxisGroupBox_3">
+          <widget class="QGroupBox" name="uAxisGroupBox">
            <property name="title">
             <string>u axis</string>
            </property>

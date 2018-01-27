@@ -13,6 +13,9 @@ class QCameraViewfinder;
 class QCameraImageCapture;
 class QVBoxLayout;
 class MotionHandler;
+#ifdef AEROTECH
+class AerotechMotionHandler;
+#endif
 
 class Magrathea : public QWidget
 {
@@ -34,7 +37,6 @@ private slots:
     //gantry
     void connectGantryBoxClicked(bool checked);
     void enableAxesClicked(bool checked);
-    void enableThings(bool checked);
 
     //motion
     void enableJoystickFreeRun(bool checked);
