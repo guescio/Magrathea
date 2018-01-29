@@ -77,7 +77,8 @@ bool AerotechMotionHandler::disconnectGantry()
 bool AerotechMotionHandler::acknowledgeMotionFaultGantry()
 {
     qInfo("resetting errors...");
-    if (A3200MotionFaultAck(gantry, TASKID_Library, allAxes)) { //acknowledge and clear axes faults
+    //if (A3200MotionFaultAck(gantry, TASKID_Library, allAxes)) { //acknowledge and clear the fault on axes
+    if (A3200AcknowledgeAll(gantry, TASKID_Library)) { //acknowledge all axis faults and clear all task errors
         qInfo("errors reset");
         return true;
     } else {

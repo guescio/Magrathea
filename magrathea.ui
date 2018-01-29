@@ -528,7 +528,7 @@
            <item>
             <widget class="QPushButton" name="resetErrorButton">
              <property name="text">
-              <string>reset error</string>
+              <string>reset errors</string>
              </property>
             </widget>
            </item>

@@ -52,7 +52,7 @@ bool MotionHandler::disconnectGantry()
 //------------------------------------------
 bool MotionHandler::acknowledgeMotionFaultGantry()
 {
-    //qInfo("resetting errors...");
+    qInfo("resetting errors...");
     if (true) { //acknowledge and clear axes faults
         qInfo("errors reset");
         return true;

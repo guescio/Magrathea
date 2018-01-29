@@ -182,20 +182,12 @@ void Magrathea::captureButtonClicked()
 
 //------------------------------------------
 //connect gantry
-//proxy function to handle the ConnectGantry and DisconnectGanrty functions from MotionHandler
+//proxy function to handle the ConnectGantry and DisconnectGantry functions from MotionHandler
 void Magrathea::connectGantryBoxClicked(bool checked)
 {
     if (checked)
     {
-        if (mMotionHandler->connectGantry()) {
-            ui->enableAxesButton->setEnabled(true);
-            ui->disableAxesButton->setEnabled(true);
-            ui->xAxisEnableBox->setEnabled(true);
-            ui->yAxisEnableBox->setEnabled(true);
-            ui->zAxisEnableBox->setEnabled(true);
-            ui->uAxisEnableBox->setEnabled(true);
-            ui->resetErrorButton->setEnabled(true);
-        } else {
+        if (!mMotionHandler->connectGantry()) {
             ui->connectGantryBox->setChecked(false);
             qWarning("could not connect to gantry");
         }
@@ -204,20 +196,23 @@ void Magrathea::connectGantryBoxClicked(bool checked)
             ui->connectGantryBox->setChecked(true);
             qWarning("disable axes before disconnecting from gantry");
         } else {
-            if(mMotionHandler->disconnectGantry()) {
-                ui->enableAxesButton->setEnabled(false);
-                ui->disableAxesButton->setEnabled(false);
-                ui->xAxisEnableBox->setEnabled(false);
-                ui->yAxisEnableBox->setEnabled(false);
-                ui->zAxisEnableBox->setEnabled(false);
-                ui->uAxisEnableBox->setEnabled(false);
-                ui->resetErrorButton->setEnabled(false);
-            } else {
+            if(!mMotionHandler->disconnectGantry()) {
                 ui->connectGantryBox->setChecked(true);
                 qWarning("could not disconnect from gantry");
             }
         }
     }
+
+    //enable/disable buttons according to gantry connection status
+    ui->enableAxesButton->setEnabled(mMotionHandler->gantryConnected);
+    ui->disableAxesButton->setEnabled(mMotionHandler->gantryConnected);
+    ui->xAxisEnableBox->setEnabled(mMotionHandler->gantryConnected);
+    ui->yAxisEnableBox->setEnabled(mMotionHandler->gantryConnected);
+    ui->zAxisEnableBox->setEnabled(mMotionHandler->gantryConnected);
+    ui->uAxisEnableBox->setEnabled(mMotionHandler->gantryConnected);
+    ui->resetErrorButton->setEnabled(mMotionHandler->gantryConnected);
+
+    return;
 }
 
 //------------------------------------------
@@ -251,6 +246,8 @@ void Magrathea::enableAxesClicked(bool checked)
                                              mMotionHandler->yAxisEnabled ||
                                              mMotionHandler->zAxisEnabled ||
                                              mMotionHandler->uAxisEnabled);
+
+    //enable/disable buttons according to axes status
     ui->positiveXButton->setEnabled(mMotionHandler->xAxisEnabled);
     ui->negativeXButton->setEnabled(mMotionHandler->xAxisEnabled);
     ui->positiveYButton->setEnabled(mMotionHandler->yAxisEnabled);
