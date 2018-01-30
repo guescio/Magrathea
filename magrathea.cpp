@@ -1,6 +1,5 @@
 #include "magrathea.h"
 #include "ui_magrathea.h"
-#include <QTime>
 #include <QTimer>
 #include <QFont>
 #include <QCamera>
@@ -187,29 +186,6 @@ Magrathea::~Magrathea()
 
 //position update
 void Magrathea::updatePosition(){
-    #ifdef DEBUG
-    if (mMotionHandler->gantryConnected) {
-        QString time = QTime::currentTime().toString("hh:mm:ss");
-        //qInfo("%s",time.toStdString().c_str());
-        ui->xAxisPositionLine->setText(time);
-        ui->yAxisPositionLine->setText(time);
-        ui->zAxisPositionLine->setText(time);
-        ui->uAxisPositionLine->setText(time);
-        ui->xAxisPositionLine2->setText(time);
-        ui->yAxisPositionLine2->setText(time);
-        ui->zAxisPositionLine2->setText(time);
-        ui->uAxisPositionLine2->setText(time);
-    } else {
-        ui->xAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[0], 'f', 3));
-        ui->yAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[1], 'f', 3));
-        ui->zAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[2], 'f', 3));
-        ui->uAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[3], 'f', 3));
-        ui->xAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[0], 'f', 3));
-        ui->yAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[1], 'f', 3));
-        ui->zAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[2], 'f', 3));
-        ui->uAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[3], 'f', 3));
-    }
-    #else
     ui->xAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[0], 'f', 3));
     ui->yAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[1], 'f', 3));
     ui->zAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[2], 'f', 3));
@@ -218,7 +194,6 @@ void Magrathea::updatePosition(){
     ui->yAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[1], 'f', 3));
     ui->zAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[2], 'f', 3));
     ui->uAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[3], 'f', 3));
-    #endif
     return;
 }
 

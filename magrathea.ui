@@ -1488,6 +1488,68 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>enableCameraBox</tabstop>
+  <tabstop>focusButton</tabstop>
+  <tabstop>captureButton</tabstop>
+  <tabstop>leftTabWidget</tabstop>
+  <tabstop>freeRunRadioButton</tabstop>
+  <tabstop>stepRadioButton</tabstop>
+  <tabstop>positiveXButton</tabstop>
+  <tabstop>negativeXButton</tabstop>
+  <tabstop>positiveYButton</tabstop>
+  <tabstop>negativeYButton</tabstop>
+  <tabstop>positiveZButton</tabstop>
+  <tabstop>negativeZButton</tabstop>
+  <tabstop>positiveUButton</tabstop>
+  <tabstop>negativeUButton</tabstop>
+  <tabstop>xAxisPositionLine2</tabstop>
+  <tabstop>yAxisPositionLine2</tabstop>
+  <tabstop>zAxisPositionLine2</tabstop>
+  <tabstop>uAxisPositionLine2</tabstop>
+  <tabstop>rightTabWidget</tabstop>
+  <tabstop>connectGantryBox</tabstop>
+  <tabstop>enableAxesButton</tabstop>
+  <tabstop>disableAxesButton</tabstop>
+  <tabstop>axesHomeButton</tabstop>
+  <tabstop>resetErrorButton</tabstop>
+  <tabstop>xAxisEnableBox</tabstop>
+  <tabstop>xAxisHomeButton</tabstop>
+  <tabstop>xAxisPositionLine</tabstop>
+  <tabstop>xAxisPositionMoveLine</tabstop>
+  <tabstop>xAxisStepLineEdit</tabstop>
+  <tabstop>xAxisSpeedLineEdit</tabstop>
+  <tabstop>xAxisPositionMoveButton</tabstop>
+  <tabstop>xAxisStepMoveButton</tabstop>
+  <tabstop>xAxisStepRepeatBox</tabstop>
+  <tabstop>yAxisEnableBox</tabstop>
+  <tabstop>yAxisHomeButton</tabstop>
+  <tabstop>yAxisPositionLine</tabstop>
+  <tabstop>yAxisPositionMoveLine</tabstop>
+  <tabstop>yAxisStepLineEdit</tabstop>
+  <tabstop>yAxisSpeedLineEdit</tabstop>
+  <tabstop>yAxisPositionMoveButton</tabstop>
+  <tabstop>yAxisStepMoveButton</tabstop>
+  <tabstop>yAxisStepRepeatBox</tabstop>
+  <tabstop>zAxisEnableBox</tabstop>
+  <tabstop>zAxisHomeButton</tabstop>
+  <tabstop>zAxisPositionLine</tabstop>
+  <tabstop>zAxisPositionMoveLine</tabstop>
+  <tabstop>zAxisStepLineEdit</tabstop>
+  <tabstop>zAxisSpeedLineEdit</tabstop>
+  <tabstop>zAxisPositionMoveButton</tabstop>
+  <tabstop>zAxisStepMoveButton</tabstop>
+  <tabstop>zAxisStepRepeatBox</tabstop>
+  <tabstop>uAxisEnableBox</tabstop>
+  <tabstop>uAxisHomeButton</tabstop>
+  <tabstop>uAxisPositionLine</tabstop>
+  <tabstop>uAxisPositionMoveLine</tabstop>
+  <tabstop>uAxisStepLineEdit</tabstop>
+  <tabstop>uAxisSpeedLineEdit</tabstop>
+  <tabstop>uAxisPositionMoveButton</tabstop>
+  <tabstop>uAxisStepMoveButton</tabstop>
+  <tabstop>uAxisStepRepeatBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
