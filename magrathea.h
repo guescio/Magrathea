@@ -13,6 +13,7 @@ class QCameraViewfinder;
 class QCameraImageCapture;
 class QVBoxLayout;
 class MotionHandler;
+class QTimer;
 #ifdef AEROTECH
 class AerotechMotionHandler;
 #endif
@@ -28,6 +29,9 @@ public:
     static QTextEdit *outputLogTextEdit;
 
 private slots:
+
+    //timer
+    void updatePosition();
 
     //camera
     void enableCameraBoxClicked(bool checked);
@@ -54,6 +58,7 @@ private:
     QCameraImageCapture *mCameraImageCapture;
     QVBoxLayout *mCameraLayout;
     MotionHandler *mMotionHandler;
+    QTimer *mPositionTimer;
 
     int autoRepeatDelay;
     int autoRepeatInterval;

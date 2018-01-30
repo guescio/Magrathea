@@ -1,5 +1,8 @@
 #include "magrathea.h"
 #include "ui_magrathea.h"
+#include <QTime>
+#include <QTimer>
+#include <QFont>
 #include <QCamera>
 #include <QCameraViewfinder>
 #include <QCameraImageCapture>
@@ -32,9 +35,52 @@ Magrathea::Magrathea(QWidget *parent) :
         qInfo("Vancouver, Aerotech A3200 gantry");
         mMotionHandler = new AerotechMotionhandler();
     #else
+        #define DEBUG
         qInfo("where is your gantry?");
         mMotionHandler = new MotionHandler();
     #endif
+
+    //------------------------------------------
+    //font
+    //QFont font=ui->pushButton->property("font").value<QFont>();
+    //qDebug()<<font.family()<<font.pointSize();
+    QFont font("");
+    font.setStyleHint(QFont::Monospace);
+
+    //position
+    ui->xAxisPositionLine->setFont(font);
+    ui->yAxisPositionLine->setFont(font);
+    ui->zAxisPositionLine->setFont(font);
+    ui->uAxisPositionLine->setFont(font);
+
+    ui->xAxisPositionLine2->setFont(font);
+    ui->yAxisPositionLine2->setFont(font);
+    ui->zAxisPositionLine2->setFont(font);
+    ui->uAxisPositionLine2->setFont(font);
+
+    //step move
+    ui->xAxisStepLineEdit->setFont(font);
+    ui->yAxisStepLineEdit->setFont(font);
+    ui->zAxisStepLineEdit->setFont(font);
+    ui->uAxisStepLineEdit->setFont(font);
+
+    //position move
+    ui->xAxisPositionMoveLine->setFont(font);
+    ui->yAxisPositionMoveLine->setFont(font);
+    ui->zAxisPositionMoveLine->setFont(font);
+    ui->uAxisPositionMoveLine->setFont(font);
+
+    //speed
+    ui->xAxisSpeedLineEdit->setFont(font);
+    ui->yAxisSpeedLineEdit->setFont(font);
+    ui->zAxisSpeedLineEdit->setFont(font);
+    ui->uAxisSpeedLineEdit->setFont(font);
+
+    //------------------------------------------
+    //timer
+    mPositionTimer = new QTimer(this);
+    connect(mPositionTimer, SIGNAL(timeout()), this, SLOT(updatePosition()));
+    mPositionTimer->start(100);//ms
 
     //------------------------------------------
     //camera
@@ -137,6 +183,46 @@ Magrathea::~Magrathea()
 }
 
 //******************************************
+//timer
+
+//position update
+void Magrathea::updatePosition(){
+    #ifdef DEBUG
+    if (mMotionHandler->gantryConnected) {
+        QString time = QTime::currentTime().toString("hh:mm:ss");
+        //qInfo("%s",time.toStdString().c_str());
+        ui->xAxisPositionLine->setText(time);
+        ui->yAxisPositionLine->setText(time);
+        ui->zAxisPositionLine->setText(time);
+        ui->uAxisPositionLine->setText(time);
+        ui->xAxisPositionLine2->setText(time);
+        ui->yAxisPositionLine2->setText(time);
+        ui->zAxisPositionLine2->setText(time);
+        ui->uAxisPositionLine2->setText(time);
+    } else {
+        ui->xAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[0], 'f', 3));
+        ui->yAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[1], 'f', 3));
+        ui->zAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[2], 'f', 3));
+        ui->uAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[3], 'f', 3));
+        ui->xAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[0], 'f', 3));
+        ui->yAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[1], 'f', 3));
+        ui->zAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[2], 'f', 3));
+        ui->uAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[3], 'f', 3));
+    }
+    #else
+    ui->xAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[0], 'f', 3));
+    ui->yAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[1], 'f', 3));
+    ui->zAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[2], 'f', 3));
+    ui->uAxisPositionLine->setText(QString::number(mMotionHandler->whereAmI()[3], 'f', 3));
+    ui->xAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[0], 'f', 3));
+    ui->yAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[1], 'f', 3));
+    ui->zAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[2], 'f', 3));
+    ui->uAxisPositionLine2->setText(QString::number(mMotionHandler->whereAmI()[3], 'f', 3));
+    #endif
+    return;
+}
+
+//******************************************
 //camera
 
 //------------------------------------------
@@ -160,7 +246,7 @@ void Magrathea::focusButtonClicked()
 //capture picture
 void Magrathea::captureButtonClicked()
 {
-    auto filename = QFileDialog::getSaveFileName(this, "Capture", "/ ", "Image (*.jpg;*.jpeg)");
+    auto filename = QFileDialog::getSaveFileName(this, "capture", "/ ", "image (*.jpg;*.jpeg)");
     if (filename.isEmpty()) {
         return;
     }
