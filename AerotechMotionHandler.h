@@ -1,7 +1,9 @@
 #include "MotionHandler.h"
+#include "A3200.h"
 
 class AerotechMotionHandler : public MotionHandler
 {
+    Q_GADGET
 
 public:
 

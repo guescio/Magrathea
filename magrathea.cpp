@@ -32,7 +32,7 @@ Magrathea::Magrathea(QWidget *parent) :
     //------------------------------------------
     #ifdef VANCOUVER
         qInfo("Vancouver, Aerotech A3200 gantry");
-        mMotionHandler = new AerotechMotionhandler();
+        mMotionHandler = new AerotechMotionHandler();
     #else
         #define DEBUG
         qInfo("where is your gantry?");
