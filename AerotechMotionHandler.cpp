@@ -2,13 +2,7 @@
 #include <QtMessageHandler>
 
 //******************************************
-AerotechMotionHandler::AerotechMotionHandler() :
-    gantryConnected(false),
-    xAxisEnabled(false),
-    yAxisEnabled(false),
-    zAxisEnabled(false),
-    uAxisEnabled(false)
-    {
+AerotechMotionHandler::AerotechMotionHandler() {
     gantry = NULL;
 
     xAxis = (AXISMASK)AXISMASK_02;

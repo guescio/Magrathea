@@ -1,20 +1,12 @@
-#include "AerotechMotionHandler.h"
-#include <QWidget>
+#include "MotionHandler.h"
 
 class AerotechMotionHandler : public MotionHandler
 {
-    Q_GADGET
 
 public:
 
     AerotechMotionHandler();
     ~AerotechMotionHandler();
-
-    bool gantryConnected;
-    bool xAxisEnabled;
-    bool yAxisEnabled;
-    bool zAxisEnabled;
-    bool uAxisEnabled;
 
 public slots:
 
