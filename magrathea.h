@@ -14,6 +14,7 @@ class QCameraImageCapture;
 class QVBoxLayout;
 class MotionHandler;
 class QTimer;
+
 #ifdef AEROTECH
 class AerotechMotionHandler;
 #endif

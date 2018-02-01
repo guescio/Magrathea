@@ -58,22 +58,80 @@ Magrathea::Magrathea(QWidget *parent) :
     ui->uAxisPositionLine2->setFont(font);
 
     //step move
-    ui->xAxisStepLineEdit->setFont(font);
-    ui->yAxisStepLineEdit->setFont(font);
-    ui->zAxisStepLineEdit->setFont(font);
-    ui->uAxisStepLineEdit->setFont(font);
+    ui->xAxisStepDoubleSpinBox->setFont(font);
+    ui->xAxisStepDoubleSpinBox->setValue(10.0);
+    ui->xAxisStepDoubleSpinBox->setMinimum(-1000.0);
+    ui->xAxisStepDoubleSpinBox->setMaximum(1000.0);
+    ui->xAxisStepDoubleSpinBox->setDecimals(3);
+    ui->xAxisStepDoubleSpinBox->setAlignment(Qt::AlignRight);
+    ui->yAxisStepDoubleSpinBox->setFont(font);
+    ui->yAxisStepDoubleSpinBox->setValue(10.0);
+    ui->yAxisStepDoubleSpinBox->setMinimum(-1000.0);
+    ui->yAxisStepDoubleSpinBox->setMaximum(1000.0);
+    ui->yAxisStepDoubleSpinBox->setDecimals(3);
+    ui->yAxisStepDoubleSpinBox->setAlignment(Qt::AlignRight);
+    ui->zAxisStepDoubleSpinBox->setFont(font);
+    ui->zAxisStepDoubleSpinBox->setValue(10.0);
+    ui->zAxisStepDoubleSpinBox->setMinimum(-300.0);
+    ui->zAxisStepDoubleSpinBox->setMaximum(300.0);
+    ui->zAxisStepDoubleSpinBox->setDecimals(3);
+    ui->zAxisStepDoubleSpinBox->setAlignment(Qt::AlignRight);
+    ui->uAxisStepDoubleSpinBox->setFont(font);
+    ui->uAxisStepDoubleSpinBox->setValue(10.0);
+    ui->uAxisStepDoubleSpinBox->setDecimals(3);
+    ui->uAxisStepDoubleSpinBox->setAlignment(Qt::AlignRight);
 
     //position move
-    ui->xAxisPositionMoveLine->setFont(font);
-    ui->yAxisPositionMoveLine->setFont(font);
-    ui->zAxisPositionMoveLine->setFont(font);
-    ui->uAxisPositionMoveLine->setFont(font);
+    ui->xAxisPositionMoveDoubleSpinBox->setFont(font);
+    ui->xAxisPositionMoveDoubleSpinBox->setValue(0.0);
+    ui->xAxisPositionMoveDoubleSpinBox->setMinimum(0.0);
+    ui->xAxisPositionMoveDoubleSpinBox->setMaximum(1000.0);
+    ui->xAxisPositionMoveDoubleSpinBox->setDecimals(3);
+    ui->xAxisPositionMoveDoubleSpinBox->setAlignment(Qt::AlignRight);
+    ui->yAxisPositionMoveDoubleSpinBox->setFont(font);
+    ui->yAxisPositionMoveDoubleSpinBox->setValue(0.0);
+    ui->yAxisPositionMoveDoubleSpinBox->setMinimum(0.0);
+    ui->yAxisPositionMoveDoubleSpinBox->setMaximum(1000.0);
+    ui->yAxisPositionMoveDoubleSpinBox->setDecimals(3);
+    ui->yAxisPositionMoveDoubleSpinBox->setAlignment(Qt::AlignRight);
+    ui->zAxisPositionMoveDoubleSpinBox->setFont(font);
+    ui->zAxisPositionMoveDoubleSpinBox->setValue(0.0);
+    ui->zAxisPositionMoveDoubleSpinBox->setMinimum(-300.0);
+    ui->zAxisPositionMoveDoubleSpinBox->setMaximum(0.0);
+    ui->zAxisPositionMoveDoubleSpinBox->setDecimals(3);
+    ui->zAxisPositionMoveDoubleSpinBox->setAlignment(Qt::AlignRight);
+    ui->uAxisPositionMoveDoubleSpinBox->setFont(font);
+    ui->uAxisPositionMoveDoubleSpinBox->setValue(0.0);
+    ui->uAxisPositionMoveDoubleSpinBox->setMinimum(0.0);
+    ui->uAxisPositionMoveDoubleSpinBox->setMaximum(360.0);
+    ui->uAxisPositionMoveDoubleSpinBox->setDecimals(3);
+    ui->uAxisPositionMoveDoubleSpinBox->setAlignment(Qt::AlignRight);
 
     //speed
-    ui->xAxisSpeedLineEdit->setFont(font);
-    ui->yAxisSpeedLineEdit->setFont(font);
-    ui->zAxisSpeedLineEdit->setFont(font);
-    ui->uAxisSpeedLineEdit->setFont(font);
+    ui->xAxisSpeedDoubleSpinBox->setFont(font);
+    ui->xAxisSpeedDoubleSpinBox->setValue(100.0);
+    ui->xAxisSpeedDoubleSpinBox->setMinimum(0.0);
+    ui->xAxisSpeedDoubleSpinBox->setMaximum(300.0);
+    ui->xAxisSpeedDoubleSpinBox->setDecimals(1);
+    ui->xAxisSpeedDoubleSpinBox->setAlignment(Qt::AlignRight);
+    ui->yAxisSpeedDoubleSpinBox->setFont(font);
+    ui->yAxisSpeedDoubleSpinBox->setValue(100.0);
+    ui->yAxisSpeedDoubleSpinBox->setMinimum(0.0);
+    ui->yAxisSpeedDoubleSpinBox->setMaximum(300.0);
+    ui->yAxisSpeedDoubleSpinBox->setDecimals(1);
+    ui->yAxisSpeedDoubleSpinBox->setAlignment(Qt::AlignRight);
+    ui->zAxisSpeedDoubleSpinBox->setFont(font);
+    ui->zAxisSpeedDoubleSpinBox->setValue(50.0);
+    ui->zAxisSpeedDoubleSpinBox->setMinimum(0.0);
+    ui->zAxisSpeedDoubleSpinBox->setMaximum(300.0);
+    ui->zAxisSpeedDoubleSpinBox->setDecimals(1);
+    ui->zAxisSpeedDoubleSpinBox->setAlignment(Qt::AlignRight);
+    ui->uAxisSpeedDoubleSpinBox->setFont(font);
+    ui->uAxisSpeedDoubleSpinBox->setValue(50.0);
+    ui->uAxisSpeedDoubleSpinBox->setMinimum(0.0);
+    ui->uAxisSpeedDoubleSpinBox->setMaximum(300.0);
+    ui->uAxisSpeedDoubleSpinBox->setDecimals(1);
+    ui->uAxisSpeedDoubleSpinBox->setAlignment(Qt::AlignRight);
 
     //------------------------------------------
     //timer
@@ -391,21 +449,21 @@ void Magrathea::enableJoystickFreeRun(bool checked)
 void Magrathea::freeRun()
 {
     if (sender() == ui->positiveXButton)
-        mMotionHandler->runX(+1, ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runX(+1, ui->xAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->negativeXButton)
-        mMotionHandler->runX(-1, ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runX(-1, ui->xAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->positiveYButton)
-        mMotionHandler->runY(+1, ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runY(+1, ui->yAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->negativeYButton)
-        mMotionHandler->runY(-1, ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runY(-1, ui->yAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->positiveZButton)
-        mMotionHandler->runZ(+1, ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runZ(+1, ui->zAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->negativeZButton)
-        mMotionHandler->runZ(-1, ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runZ(-1, ui->zAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->positiveUButton)
-        mMotionHandler->runU(+1, ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runU(+1, ui->uAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->negativeUButton)
-        mMotionHandler->runU(-1, ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->runU(-1, ui->uAxisSpeedDoubleSpinBox->value());
     return;
 }
 
@@ -473,31 +531,31 @@ void Magrathea::stepMotion()
 {
     //joystick
     if (sender() == ui->positiveXButton)
-        mMotionHandler->moveXBy(+1*abs(ui->xAxisStepLineEdit->text().toDouble()), ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveXBy(+1*abs(ui->xAxisStepDoubleSpinBox->value()), ui->xAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->negativeXButton)
-        mMotionHandler->moveXBy(-1*abs(ui->xAxisStepLineEdit->text().toDouble()), ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveXBy(-1*abs(ui->xAxisStepDoubleSpinBox->value()), ui->xAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->positiveYButton)
-        mMotionHandler->moveYBy(+1*abs(ui->yAxisStepLineEdit->text().toDouble()), ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveYBy(+1*abs(ui->yAxisStepDoubleSpinBox->value()), ui->yAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->negativeYButton)
-        mMotionHandler->moveYBy(-1*abs(ui->yAxisStepLineEdit->text().toDouble()), ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveYBy(-1*abs(ui->yAxisStepDoubleSpinBox->value()), ui->yAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->positiveZButton)
-        mMotionHandler->moveZBy(+1*abs(ui->zAxisStepLineEdit->text().toDouble()), ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveZBy(+1*abs(ui->zAxisStepDoubleSpinBox->value()), ui->zAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->negativeZButton)
-        mMotionHandler->moveZBy(-1*abs(ui->zAxisStepLineEdit->text().toDouble()), ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveZBy(-1*abs(ui->zAxisStepDoubleSpinBox->value()), ui->zAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->positiveUButton)
-        mMotionHandler->moveUBy(+1*abs(ui->uAxisStepLineEdit->text().toDouble()), ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveUBy(+1*abs(ui->uAxisStepDoubleSpinBox->value()), ui->uAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->negativeUButton)
-        mMotionHandler->moveUBy(-1*abs(ui->uAxisStepLineEdit->text().toDouble()), ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveUBy(-1*abs(ui->uAxisStepDoubleSpinBox->value()), ui->uAxisSpeedDoubleSpinBox->value());
 
     //naviagtion panel
     else if  (sender() == ui->xAxisStepMoveButton)
-        mMotionHandler->moveXBy(ui->xAxisStepLineEdit->text().toDouble(), ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveXBy(ui->xAxisStepDoubleSpinBox->value(), ui->xAxisSpeedDoubleSpinBox->value());
     else if  (sender() == ui->yAxisStepMoveButton)
-        mMotionHandler->moveYBy(ui->yAxisStepLineEdit->text().toDouble(), ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveYBy(ui->yAxisStepDoubleSpinBox->value(), ui->yAxisSpeedDoubleSpinBox->value());
     else if  (sender() == ui->zAxisStepMoveButton)
-        mMotionHandler->moveZBy(ui->zAxisStepLineEdit->text().toDouble(), ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveZBy(ui->zAxisStepDoubleSpinBox->value(), ui->zAxisSpeedDoubleSpinBox->value());
     else if  (sender() == ui->uAxisStepMoveButton)
-        mMotionHandler->moveUBy(ui->uAxisStepLineEdit->text().toDouble(), ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveUBy(ui->uAxisStepDoubleSpinBox->value(), ui->uAxisSpeedDoubleSpinBox->value());
     return;
 }
 
@@ -506,13 +564,13 @@ void Magrathea::stepMotion()
 void Magrathea::positionMove()
 {
     if (sender() == ui->xAxisPositionMoveButton)
-        mMotionHandler->moveXTo(ui->xAxisPositionMoveLine->text().toDouble(), ui->xAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveXTo(ui->xAxisPositionMoveDoubleSpinBox->value(), ui->xAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->yAxisPositionMoveButton)
-        mMotionHandler->moveYTo(ui->yAxisPositionMoveLine->text().toDouble(), ui->yAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveYTo(ui->yAxisPositionMoveDoubleSpinBox->value(), ui->yAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->zAxisPositionMoveButton)
-        mMotionHandler->moveZTo(ui->zAxisPositionMoveLine->text().toDouble(), ui->zAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveZTo(ui->zAxisPositionMoveDoubleSpinBox->value(), ui->zAxisSpeedDoubleSpinBox->value());
     else if (sender() == ui->uAxisPositionMoveButton)
-        mMotionHandler->moveUTo(ui->uAxisPositionMoveLine->text().toDouble(), ui->uAxisSpeedLineEdit->text().toDouble());
+        mMotionHandler->moveUTo(ui->uAxisPositionMoveDoubleSpinBox->value(), ui->uAxisSpeedDoubleSpinBox->value());
     return;
 }
 
