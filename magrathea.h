@@ -31,6 +31,9 @@ public:
 
 private slots:
 
+    //TEST
+    void test();//TEST
+
     //timer
     void updatePosition();
 

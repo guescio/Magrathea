@@ -1,5 +1,9 @@
 #include "MotionHandler.h"
 #include <QtMessageHandler>
+#include <unistd.h>//TEST usleep function
+#include <QCoreApplication>//TEST
+#include <QFuture>//TEST
+#include <QtConcurrent>//TEST
 
 //******************************************
 MotionHandler::MotionHandler() :
@@ -12,6 +16,32 @@ MotionHandler::MotionHandler() :
 
 //******************************************
 MotionHandler::~MotionHandler() {}
+
+
+//******************************************
+//TEST
+void MotionHandler::motionTest() {
+    qInfo("running test...");
+    //fprintf(stderr, "TEST running test");
+    //usleep(5e6);
+    QFuture<void> t = QtConcurrent::run(usleep, 5e6);
+    //t.waitForFinished();
+    //QtConcurrent::run(motionInception);
+    qInfo("test run");
+    //fprintf(stderr, "TEST test run");
+    return;
+}
+
+void MotionHandler::motionInception() {
+    //qInfo("going deeper...");//NOTE using qInfo gives problems
+    fprintf(stderr, "TEST: going deeper...");
+    usleep(5e6);
+    //qInfo("done, now get out");//NOTE using qInfo gives problems
+    fprintf(stderr, "TEST: done, now get out");
+    return;
+}
+//END TEST
+//******************************************
 
 //******************************************
 // connect to the gantry

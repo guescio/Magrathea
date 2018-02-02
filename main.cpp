@@ -43,6 +43,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 
 int main(int argc, char *argv[])
 {
+    //qRegisterMetaType<QTextCursor>("QTextCursor");//TEST needed to use QtConcurrent
     qInstallMessageHandler(messageHandler);
     QApplication a(argc, argv);
     Magrathea w;

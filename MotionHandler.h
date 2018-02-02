@@ -16,7 +16,11 @@ public:
     bool zAxisEnabled;
     bool uAxisEnabled;
 
+    static void motionInception();//TEST
+
 public slots:
+
+    virtual void motionTest();//TEST
 
     //******************************************
     // connect to the gantry

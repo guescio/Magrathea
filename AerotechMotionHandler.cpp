@@ -1,5 +1,8 @@
 #include "AerotechMotionHandler.h"
 #include <QtMessageHandler>
+#include <QCoreApplication>//TEST
+#include <QFuture>//TEST
+#include <QtConcurrent>//TEST
 
 //******************************************
 AerotechMotionHandler::AerotechMotionHandler() {
@@ -249,17 +252,13 @@ bool AerotechMotionHandler::disableUAxis()
 // home axes
 
 //------------------------------------------
+//TEST
 bool AerotechMotionHandler::home() {
-    qInfo("homing axes...");
-    if (A3200MotionHome(gantry, TASKID_Library, allAxes)) { //home all axes here
-        qInfo("axes homed");
-        return true;
-    } else {
-        qWarning("could not home axes");
-        return false;
-    }
+    qInfo("homing axes");
+    QtConcurrent::run(A3200MotionHome, gantry, TASKID_Library, allAxes); //home all axes here
     return true;
 }
+//END TEST
 
 //------------------------------------------
 bool AerotechMotionHandler::homeX() {

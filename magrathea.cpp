@@ -11,6 +11,9 @@
 #include <QtMessageHandler>
 #include <MotionHandler.h>
 #include <cmath>
+#include <QCoreApplication>//TEST
+#include <QFuture>//TEST
+#include <QtConcurrent>//TEST
 #ifdef VANCOUVER
 #include <AerotechMotionhandler.h>
 #endif
@@ -40,6 +43,8 @@ Magrathea::Magrathea(QWidget *parent) :
     #endif
 
     //------------------------------------------
+    //layout setup
+
     //font
     //QFont font=ui->pushButton->property("font").value<QFont>();
     //qDebug()<<font.family()<<font.pointSize();
@@ -187,6 +192,9 @@ Magrathea::Magrathea(QWidget *parent) :
     //------------------------------------------
     //connect signals and slots
 
+    //TEST
+    connect(ui->testButton, SIGNAL(clicked(bool)), this, SLOT(test()));//TEST
+
     //camera
     connect(ui->enableCameraBox, SIGNAL(toggled(bool)), this, SLOT(enableCameraBoxClicked(bool)));
     connect(ui->focusButton,     SIGNAL(clicked(bool)), this, SLOT(focusButtonClicked()));
@@ -238,6 +246,20 @@ Magrathea::~Magrathea()
     delete ui;
     delete mMotionHandler;
 }
+
+//******************************************
+//TEST
+//enable
+void Magrathea::test()
+{
+    //QFuture<bool> t =
+    //QtConcurrent::run(mMotionHandler, &MotionHandler::inception);
+    //t.waitForFinished();//NOTE do not wait!
+    mMotionHandler->motionTest();
+    return;
+}
+//END TEST
+//******************************************
 
 //******************************************
 //timer
