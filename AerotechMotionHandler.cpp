@@ -29,13 +29,17 @@ AerotechMotionHandler::~AerotechMotionHandler() {
     if (gantry != NULL) {
         if (!A3200MotionDisable(gantry, TASKID_Library, allAxes))
             qWarning("axes disabled");
+        else
+            qWarning("could not disable axes");
         if (!A3200Disconnect(gantry))
             qWarning("gantry disconnected");
+        else
+            qWarning("could not disconnect gantry");
     }
 }
 
 //******************************************
-// connect to the gantry
+// gantry connection and axes enabling
 
 //------------------------------------------
 bool AerotechMotionHandler::connectGantry(bool flag)
@@ -71,18 +75,11 @@ bool AerotechMotionHandler::disconnectGantry()
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::acknowledgeMotionFaultGantry()
+void AerotechMotionHandler::acknowledgeMotionFaultGantry()
 {
-    qInfo("resetting errors...");
-    //if (A3200MotionFaultAck(gantry, TASKID_Library, allAxes)) { //acknowledge and clear the fault on axes
-    if (A3200AcknowledgeAll(gantry, TASKID_Library)) { //acknowledge all axis faults and clear all task errors
-        qInfo("errors reset");
-        return true;
-    } else {
-        qWarning("could not reset errors");
-        return false;
-    }
-    return true;
+    qInfo("reseterrors");
+    QtConcurrent::run(A3200AcknowledgeAll gantry, TASKID_Library) //acknowledge all axis faults and clear all task errors
+    return;
 }
 
 //------------------------------------------
@@ -252,64 +249,38 @@ bool AerotechMotionHandler::disableUAxis()
 // home axes
 
 //------------------------------------------
-//TEST
-bool AerotechMotionHandler::home() {
-    qInfo("homing axes");
+void AerotechMotionHandler::home() {
+    qInfo("home axes");
     QtConcurrent::run(A3200MotionHome, gantry, TASKID_Library, allAxes); //home all axes here
-    return true;
-}
-//END TEST
-
-//------------------------------------------
-bool AerotechMotionHandler::homeX() {
-    qInfo("homing x axis...");
-    if (A3200MotionHome(gantry, TASKID_Library, xAxis)) { //home x axis here
-        qInfo("x axis homed");
-        return true;
-    } else {
-        qWarning("could not home x axis");
-        return false;
-    }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::homeY() {
-    qInfo("homing y axis...");
-    if (A3200MotionHome(gantry, TASKID_Library, yAxis)) { //home y axis here
-        qInfo("y axis homed");
-        return true;
-    } else {
-        qWarning("could not home y axis");
-        return false;
-    }
-    return true;
+void AerotechMotionHandler::homeX() {
+    qInfo("home x axis");
+    QtConcurrent::run(A3200MotionHome, gantry, TASKID_Library, xAxis); //home x axis here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::homeZ() {
-    qInfo("homing z axis...");
-    if (A3200MotionHome(gantry, TASKID_Library, zAxis)) { //home z axis here
-        qInfo("z axis homed");
-        return true;
-    } else {
-        qWarning("could not home z axis");
-        return false;
-    }
-    return true;
+void AerotechMotionHandler::homeY() {
+    qInfo("home y axis");
+    QtConcurrent::run(A3200MotionHome, gantry, TASKID_Library, yAxis); //home y axis here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::homeU() {
-    qInfo("homing u axis...");
-    if (A3200MotionHome(gantry, TASKID_Library, uAxis)) { //home u axis here
-        qInfo("u axis homed");
-        return true;
-    } else {
-        qWarning("could not home u axis");
-        return false;
-    }
-    return true;
+void AerotechMotionHandler::homeZ() {
+    qInfo("home z axis");
+    QtConcurrent::run(A3200MotionHome, gantry, TASKID_Library, zAxis); //home z axis here
+    return;
+}
+
+//------------------------------------------
+void AerotechMotionHandler::homeU() {
+    qInfo("home u axis");
+    QtConcurrent::run(A3200MotionHome, gantry, TASKID_Library, uAxis); //home u axis here
+    return;
 }
 
 //******************************************
@@ -317,6 +288,7 @@ bool AerotechMotionHandler::homeU() {
 // NOTE units in mm, mm/s and deg/s
 
 //------------------------------------------
+//CHECK what to do with A3200MotionWaitForMotionDone?
 bool AerotechMotionHandler::moveTo(double x, double y, double z, double speed)
 {
     qInfo("moving to (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed...", x, y, z, speed);
@@ -334,17 +306,12 @@ bool AerotechMotionHandler::moveTo(double x, double y, double z, double speed)
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::moveXTo(double x, double speed) {
-    qInfo("moving x axis to %.3f mm at %.3f mm/s speed", x, speed);
-    if (A3200MotionMoveAbs(gantry, TASKID_Library, xIndex, x, speed)) { //move to destination here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved x axis to destination");
-        return true;
-    } else {
-        qWarning("could not move x axis to destination");
-        return false;
-    }
-    return true;
+//TEST
+void AerotechMotionHandler::moveXTo(double x, double speed) {
+    qInfo("move x axis to %.3f mm at %.3f mm/s speed", x, speed);
+    QtConcurrent::run(A3200MotionMoveAbs, gantry, TASKID_Library, xIndex, x, speed) //move to destination here
+    QtConcurrent::run(A3200MotionWaitForMotionDone, gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
+    return;
 }
 
 //------------------------------------------
@@ -411,17 +378,12 @@ bool AerotechMotionHandler::moveBy(double x, double y, double z, double speed)
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::moveXBy(double x, double speed) {
-    qInfo("moving x axis by %.3f mm at %.3f mm/s", x, speed);
-    if (A3200MotionMoveInc(gantry, TASKID_Library, xIndex, x, speed)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved x axis by step");
-        return true;
-    } else {
-        qWarning("could not move x axis by step");
-        return false;
-    }
-    return true;
+//TEST
+void AerotechMotionHandler::moveXBy(double x, double speed) {
+    qInfo("move x axis by %.3f mm at %.3f mm/s", x, speed);
+    QtConcurrent::run(A3200MotionMoveInc, gantry, TASKID_Library, xIndex, x, speed) //move to destination here
+    QtConcurrent::run(A3200MotionWaitForMotionDone, gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
+    return;
 }
 
 //------------------------------------------
@@ -472,108 +434,69 @@ bool AerotechMotionHandler::moveUBy(double u, double speed) {
 // NOTE units in mm, mm/s and deg/s
 
 //------------------------------------------
-bool AerotechMotionHandler::runX(double direction, double speed)
+void AerotechMotionHandler::runX(double direction, double speed)
 {
     qInfo("free running %sx axis at %.3f mm/s", direction<0?"-":"+", speed);
-    if (A3200MotionFreeRun(gantry, TASKID_Library, xIndex, direction<0?-1.*speed:speed)) { //free run here
-        return true;
-    } else {
-        qWarning("could not free run along x axis");
-        return false;
-    }
-    return true;
+    QtConcurrent::run(A3200MotionFreeRun, gantry, TASKID_Library, xIndex, direction<0?-1.*speed:speed) //free run here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::endRunX()
+void AerotechMotionHandler::endRunX()
 {
     qInfo("stop free running along x axis");
-    if (A3200MotionFreeRunStop(gantry, TASKID_Library, xIndex)) { //stop free run here
-        return true;
-    } else {
-        qWarning("could not stop free run along x axis");
-        return false;
-    }
-    return true;
+    QtConcurrent::run(A3200MotionFreeRunStop, gantry, TASKID_Library, xIndex) //stop free run here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::runY(double direction, double speed)
+void AerotechMotionHandler::runY(double direction, double speed)
 {
     qInfo("free running %sy axis at %.3f mm/s", direction<0?"-":"+", speed);
-    if (A3200MotionFreeRun(gantry, TASKID_Library, yIndex, direction<0?-1.*speed:speed)) { //free run here
-        return true;
-    } else {
-        qWarning("could not free run along y axis");
-        return false;
-    }
-    return true;
+    QtConcurrent::run(A3200MotionFreeRun, gantry, TASKID_Library, yIndex, direction<0?-1.*speed:speed) //free run here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::endRunY()
+void AerotechMotionHandler::endRunY()
 {
     qInfo("stop free running along y axis");
-    if (A3200MotionFreeRunStop(gantry, TASKID_Library, yIndex)) { //stop free run here
-        return true;
-    } else {
-        qWarning("could not stop free run along y axis");
-        return false;
-    }
-    return true;
+    QtConcurrent::run(A3200MotionFreeRunStop, gantry, TASKID_Library, yIndex) //stop free run here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::runZ(double direction, double speed)
+void AerotechMotionHandler::runZ(double direction, double speed)
 {
     qInfo("free running %sz axis at %.3f mm/s", direction<0?"-":"+", speed);
-    if (A3200MotionFreeRun(gantry, TASKID_Library, zIndex, direction<0?-1.*speed:speed)) { //free run here
-        return true;
-    } else {
-        qWarning("could not free run along z axis");
-        return false;
-    }
-    return true;
+    QtConcurrent::run(A3200MotionFreeRun, gantry, TASKID_Library, zIndex, direction<0?-1.*speed:speed) //free run here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::endRunZ()
+void AerotechMotionHandler::endRunZ()
 {
     qInfo("stop free running along z axis");
-    if (A3200MotionFreeRunStop(gantry, TASKID_Library, zIndex)) { //stop free run here
-        return true;
-    } else {
-        qWarning("could not stop free run along z axis");
-        return false;
-    }
-    return true;
+    QtConcurrent::run(A3200MotionFreeRunStop, gantry, TASKID_Library, zIndex) //stop free run here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::runU(double direction, double speed)
+void AerotechMotionHandler::runU(double direction, double speed)
 {
     qInfo("free running %su axis at %.3f deg/s", direction<0?"-":"+", speed);
-    if (A3200MotionFreeRun(gantry, TASKID_Library, uIndex, direction<0?-1.*speed:speed)) { //free run here
-        return true;
-    } else {
-        qWarning("could not free run along u axis");
-        return false;
-    }
-    return true;
+    QtConcurrent::run(A3200MotionFreeRun, gantry, TASKID_Library, uIndex, direction<0?-1.*speed:speed) //free run here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::endRunU()
+void AerotechMotionHandler::endRunU()
 {
     qInfo("stop free running along u axis");
-    if (A3200MotionFreeRunStop(gantry, TASKID_Library, uIndex)) { //stop free run here
-        return true;
-    } else {
-        qWarning("could not stop free run along u axis");
-        return false;
-    }
-    return true;
+    QtConcurrent::run(A3200MotionFreeRunStop, gantry, TASKID_Library, uIndex) //stop free run here
+    return;
 }
+
 
 //******************************************
 //gantry current position
