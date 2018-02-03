@@ -80,17 +80,16 @@ bool MotionHandler::disconnectGantry()
 }
 
 //------------------------------------------
-bool MotionHandler::acknowledgeMotionFaultGantry()
+void MotionHandler::acknowledgeMotionFaultGantry()
 {
     qInfo("resetting errors...");
     if (true) { //acknowledge and clear axes faults
         qInfo("errors reset");
-        return true;
     } else {
         qWarning("could not reset errors");
-        return false;
     }
-    return true;}
+    return;
+}
 
 //------------------------------------------
 bool MotionHandler::enableAxes(bool flag)
@@ -259,68 +258,58 @@ bool MotionHandler::disableUAxis()
 // home axes
 
 //------------------------------------------
-bool MotionHandler::home() {
+void MotionHandler::home() {
     qInfo("homing axes...");
     if (true) { //home all axes here
         qInfo("axes homed");
-        return true;
     } else {
         qWarning("could not home axes");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::homeX() {
+void MotionHandler::homeX() {
     qInfo("homing x axis...");
     if (true) { //home x axis here
         qInfo("x axis homed");
-        return true;
     } else {
         qWarning("could not home x axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::homeY() {
+void MotionHandler::homeY() {
     qInfo("homing y axis...");
     if (true) { //home y axis here
         qInfo("y axis homed");
-        return true;
     } else {
         qWarning("could not home y axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::homeZ() {
+void MotionHandler::homeZ() {
     qInfo("homing z axis...");
     if (true) { //home z axis here
         qInfo("z axis homed");
-        return true;
     } else {
         qWarning("could not home z axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::homeU() {
+void MotionHandler::homeU() {
     qInfo("homing u axis...");
     if (true) { //home u axis here
         qInfo("u axis homed");
-        return true;
     } else {
         qWarning("could not home u axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //******************************************
@@ -342,16 +331,14 @@ bool MotionHandler::moveTo(double x, double y, double z, double speed)
 }
 
 //------------------------------------------
-bool MotionHandler::moveXTo(double x, double speed) {
+void MotionHandler::moveXTo(double x, double speed) {
     qInfo("moving x axis to %.3f mm at %.3f mm/s speed", x, speed);
     if (true) { //move to destination here
         qInfo("moved x axis to destination");
-        return true;
     } else {
         qWarning("could not move x axis to destination");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
@@ -412,16 +399,14 @@ bool MotionHandler::moveBy(double x, double y, double z, double speed)
 }
 
 //------------------------------------------
-bool MotionHandler::moveXBy(double x, double speed) {
+void MotionHandler::moveXBy(double x, double speed) {
     qInfo("moving x axis by %.3f mm at %.3f mm/s", x, speed);
     if (true) { //move by step here
         qInfo("moved x axis by step");
-        return true;
     } else {
         qWarning("could not move x axis by step");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
@@ -469,107 +454,83 @@ bool MotionHandler::moveUBy(double u, double speed) {
 // NOTE units in mm, mm/s and deg/s
 
 //------------------------------------------
-bool MotionHandler::runX(double direction, double speed)
+void MotionHandler::runX(double direction, double speed)
 {
     qInfo("free running %sx axis at %.3f mm/s", direction<0?"-":"+", speed);
-    if (true) { //free run here
-        return true;
-    } else {
+    if (!true) { //free run here
         qWarning("could not free run along x axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::endRunX()
+void MotionHandler::endRunX()
 {
     qInfo("stop free running along x axis");
-    if (true) { //stop free run here
-        return true;
-    } else {
+    if (!true) { //stop free run here
         qWarning("could not stop free run along x axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::runY(double direction, double speed)
+void MotionHandler::runY(double direction, double speed)
 {
     qInfo("free running %sy axis at %.3f mm/s", direction<0?"-":"+", speed);
-    if (true) { //free run here
-        return true;
-    } else {
+    if (!true) { //free run here
         qWarning("could not free run along y axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::endRunY()
+void MotionHandler::endRunY()
 {
     qInfo("stop free running along y axis");
-    if (true) { //stop free run here
-        return true;
-    } else {
+    if (!true) { //stop free run here
         qWarning("could not stop free run along y axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::runZ(double direction, double speed)
+void MotionHandler::runZ(double direction, double speed)
 {
     qInfo("free running %sz axis at %.3f mm/s", direction<0?"-":"+", speed);
-    if (true) { //free run here
-        return true;
-    } else {
+    if (!true) { //free run here
         qWarning("could not free run along z axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::endRunZ()
+void MotionHandler::endRunZ()
 {
     qInfo("stop free running along z axis");
-    if (true) { //stop free run here
-        return true;
-    } else {
+    if (!true) { //stop free run here
         qWarning("could not stop free run along z axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::runU(double direction, double speed)
+void MotionHandler::runU(double direction, double speed)
 {
     qInfo("free running %su axis at %.3f deg/s", direction<0?"-":"+", speed);
-    if (true) { //free run here
-        return true;
-    } else {
+    if (!true) { //free run here
         qWarning("could not free run along u axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::endRunU()
+void MotionHandler::endRunU()
 {
     qInfo("stop free running along u axis");
-    if (true) { //stop free run here
-        return true;
-    } else {
+    if (!true) { //stop free run here
         qWarning("could not stop free run along u axis");
-        return false;
     }
-    return true;
+    return;
 }
 
 //******************************************

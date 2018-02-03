@@ -77,8 +77,8 @@ bool AerotechMotionHandler::disconnectGantry()
 //------------------------------------------
 void AerotechMotionHandler::acknowledgeMotionFaultGantry()
 {
-    qInfo("reseterrors");
-    QtConcurrent::run(A3200AcknowledgeAll gantry, TASKID_Library) //acknowledge all axis faults and clear all task errors
+    qInfo("reset errors");
+    QtConcurrent::run(A3200AcknowledgeAll, gantry, TASKID_Library); //acknowledge all axis faults and clear all task errors
     return;
 }
 
