@@ -201,6 +201,7 @@ Magrathea::Magrathea(QWidget *parent) :
     connect(ui->zAxisEnableBox,   SIGNAL(toggled(bool)), this, SLOT(enableAxesClicked(bool)));
     connect(ui->uAxisEnableBox,   SIGNAL(toggled(bool)), this, SLOT(enableAxesClicked(bool)));
     connect(ui->resetErrorButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::acknowledgeMotionFaultGantry);
+    connect(ui->stopButton, &QPushButton::clicked, mMotionHandler, &MotionHandler::stop);
 
     //joystick
     connect(ui->freeRunRadioButton, SIGNAL(clicked(bool)), this, SLOT(enableJoystickFreeRun(bool)));
@@ -359,6 +360,12 @@ void Magrathea::enableAxesClicked(bool checked)
                                        mMotionHandler->yAxisEnabled ||
                                        mMotionHandler->zAxisEnabled ||
                                        mMotionHandler->uAxisEnabled));
+
+    //stop
+    ui->stopButton->setEnabled(mMotionHandler->xAxisEnabled ||
+                               mMotionHandler->yAxisEnabled ||
+                               mMotionHandler->zAxisEnabled ||
+                               mMotionHandler->uAxisEnabled);
 
     //joystick
     ui->leftTabWidget->widget(0)->setEnabled(mMotionHandler->xAxisEnabled ||

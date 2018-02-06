@@ -21,6 +21,10 @@ public slots:
     virtual bool disconnectGantry();
 
     //******************************************
+    //stop gantry
+    virtual bool stop();
+
+    //******************************************
     // acknowledge gantry motion errors
     virtual bool acknowledgeMotionFaultGantry();
 

@@ -68,6 +68,19 @@ bool AerotechMotionHandler::disconnectGantry()
 }
 
 //------------------------------------------
+bool MotionHandler::stop(){
+    qInfo("stopping...");
+    if (A3200MotionAbort(gantry, allAxes)) { //stop here
+        qInfo("stop");
+        return true;
+    } else {
+        qWarning("could not stop");
+        return false;
+    }
+    return true;
+}
+
+//------------------------------------------
 bool AerotechMotionHandler::acknowledgeMotionFaultGantry()
 {
     qInfo("resetting errors...");
@@ -376,7 +389,7 @@ bool AerotechMotionHandler::moveUBy(double u, double speed) {
 //------------------------------------------
 bool AerotechMotionHandler::runX(double direction, double speed)
 {
-    qInfo("free running %sx axis at %.3f mm/s", direction<0?"-":"+", speed);
+    qInfo("free running %sx axis at %.1f mm/s", direction<0?"-":"+", speed);
     if (A3200MotionFreeRun(gantry, TASKID_Library, xIndex, direction<0?-1.*speed:speed)) { //free run here
         return true;
     } else {
@@ -402,7 +415,7 @@ bool AerotechMotionHandler::endRunX()
 //------------------------------------------
 bool AerotechMotionHandler::runY(double direction, double speed)
 {
-    qInfo("free running %sy axis at %.3f mm/s", direction<0?"-":"+", speed);
+    qInfo("free running %sy axis at %.1f mm/s", direction<0?"-":"+", speed);
     if (A3200MotionFreeRun(gantry, TASKID_Library, yIndex, direction<0?-1.*speed:speed)) { //free run here
         return true;
     } else {
@@ -428,7 +441,7 @@ bool AerotechMotionHandler::endRunY()
 //------------------------------------------
 bool AerotechMotionHandler::runZ(double direction, double speed)
 {
-    qInfo("free running %sz axis at %.3f mm/s", direction<0?"-":"+", speed);
+    qInfo("free running %sz axis at %.1f mm/s", direction<0?"-":"+", speed);
     if (A3200MotionFreeRun(gantry, TASKID_Library, zIndex, direction<0?-1.*speed:speed)) { //free run here
         return true;
     } else {
@@ -454,7 +467,7 @@ bool AerotechMotionHandler::endRunZ()
 //------------------------------------------
 bool AerotechMotionHandler::runU(double direction, double speed)
 {
-    qInfo("free running %su axis at %.3f deg/s", direction<0?"-":"+", speed);
+    qInfo("free running %su axis at %.1f deg/s", direction<0?"-":"+", speed);
     if (A3200MotionFreeRun(gantry, TASKID_Library, uIndex, direction<0?-1.*speed:speed)) { //free run here
         return true;
     } else {

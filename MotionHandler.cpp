@@ -50,6 +50,19 @@ bool MotionHandler::disconnectGantry()
 }
 
 //------------------------------------------
+bool MotionHandler::stop(){
+    qInfo("stopping...");
+    if (true) { //stop here
+        qInfo("stop");
+        return true;
+    } else {
+        qWarning("could not stop");
+        return false;
+    }
+    return true;
+}
+
+//------------------------------------------
 bool MotionHandler::acknowledgeMotionFaultGantry()
 {
     qInfo("resetting errors...");
