@@ -424,7 +424,7 @@ bool MotionHandler::moveZBy(double z, double speed) {
 bool MotionHandler::moveUBy(double u, double speed) {
     qInfo("moving u axis by %.3f deg at %.3f deg/s", u, speed);
     if (true) { //move by step here
-        qInfo("moved u- axis by step");
+        qInfo("moved u axis by step");
         return true;
     } else {
         qWarning("could not move u axis by step");

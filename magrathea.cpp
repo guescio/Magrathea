@@ -90,8 +90,8 @@ Magrathea::Magrathea(QWidget *parent) :
     ui->xAxisPositionMoveDoubleSpinBox->setAlignment(Qt::AlignRight);
     ui->yAxisPositionMoveDoubleSpinBox->setFont(font);
     ui->yAxisPositionMoveDoubleSpinBox->setValue(0.0);
-    ui->yAxisPositionMoveDoubleSpinBox->setMinimum(0.0);
-    ui->yAxisPositionMoveDoubleSpinBox->setMaximum(1000.0);
+    ui->yAxisPositionMoveDoubleSpinBox->setMinimum(-1000.0);
+    ui->yAxisPositionMoveDoubleSpinBox->setMaximum(0.0);
     ui->yAxisPositionMoveDoubleSpinBox->setDecimals(3);
     ui->yAxisPositionMoveDoubleSpinBox->setAlignment(Qt::AlignRight);
     ui->zAxisPositionMoveDoubleSpinBox->setFont(font);

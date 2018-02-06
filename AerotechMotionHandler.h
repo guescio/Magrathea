@@ -1,5 +1,8 @@
 #include "MotionHandler.h"
 #include "A3200.h"
+#include <QCoreApplication>
+#include <QFuture>
+#include <QtConcurrent>
 
 class AerotechMotionHandler : public MotionHandler
 {

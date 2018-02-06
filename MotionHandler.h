@@ -7,8 +7,8 @@ class MotionHandler : public QWidget
 
 public:
 
-	MotionHandler();
-	~MotionHandler();
+    MotionHandler();
+    ~MotionHandler();
 
     bool gantryConnected;
     bool xAxisEnabled;
