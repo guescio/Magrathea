@@ -317,17 +317,15 @@ void MotionHandler::homeU() {
 // NOTE units in mm, mm/s and deg/s
 
 //------------------------------------------
-bool MotionHandler::moveTo(double x, double y, double z, double speed)
+void MotionHandler::moveTo(double x, double y, double z, double speed)
 {
     qInfo("moving to (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed...", x, y, z, speed);
     if (true) { //move to destination here
         qInfo("moved to destination");
-        return true;
     } else {
         qWarning("could not move to destination");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
@@ -342,42 +340,36 @@ void MotionHandler::moveXTo(double x, double speed) {
 }
 
 //------------------------------------------
-bool MotionHandler::moveYTo(double y, double speed) {
+void MotionHandler::moveYTo(double y, double speed) {
     qInfo("moving y axis to %.3f mm at %.3f mm/s speed", y, speed);
     if (true) { //move to destination here
         qInfo("moved y axis to destination");
-        return true;
     } else {
         qWarning("could not move y axis to destination");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::moveZTo(double z, double speed) {
+void MotionHandler::moveZTo(double z, double speed) {
     qInfo("moving z axis to %.3f mm at %.3f mm/s speed", z, speed);
     if (true) { //move to destination here
         qInfo("moved z axis to destination");
-        return true;
     } else {
         qWarning("could not move z axis to destination");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::moveUTo(double u, double speed) {
+void MotionHandler::moveUTo(double u, double speed) {
     qInfo("moving u axis to %.3f mm at %.3f mm/s speed", u, speed);
     if (true) { //move to destination here
         qInfo("moved u axis to destination");
-        return true;
     } else {
         qWarning("could not move u axis to destination");
-        return false;
     }
-    return true;
+    return;
 }
 
 //******************************************
@@ -385,17 +377,15 @@ bool MotionHandler::moveUTo(double u, double speed) {
 // NOTE units in mm, mm/s and deg/s
 
 //------------------------------------------
-bool MotionHandler::moveBy(double x, double y, double z, double speed)
+void MotionHandler::moveBy(double x, double y, double z, double speed)
 {
     qInfo("moving by (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed", x, y, z, speed);
     if (true) { //move by step here
         qInfo("moved by step");
-        return true;
     } else {
         qWarning("could not move by step");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
@@ -410,42 +400,36 @@ void MotionHandler::moveXBy(double x, double speed) {
 }
 
 //------------------------------------------
-bool MotionHandler::moveYBy(double y, double speed) {
+void MotionHandler::moveYBy(double y, double speed) {
     qInfo("moving y axis by %.3f mm at %.3f mm/s", y, speed);
     if (true) { //move by step here
         qInfo("moved y axis by step");
-        return true;
     } else {
         qWarning("could not move y axis by step");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::moveZBy(double z, double speed) {
+void MotionHandler::moveZBy(double z, double speed) {
     qInfo("moving z axis by %.3f mm at %.3f mm/s", z, speed);
     if (true) { //move by step here
         qInfo("moved z axis by step");
-        return true;
     } else {
         qWarning("could not move z axis by step");
-        return false;
     }
-    return true;
+    return;
 }
 
 //------------------------------------------
-bool MotionHandler::moveUBy(double u, double speed) {
+void MotionHandler::moveUBy(double u, double speed) {
     qInfo("moving u axis by %.3f deg at %.3f deg/s", u, speed);
     if (true) { //move by step here
         qInfo("moved u- axis by step");
-        return true;
     } else {
         qWarning("could not move u axis by step");
-        return false;
     }
-    return true;
+    return;
 }
 
 

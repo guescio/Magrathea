@@ -58,20 +58,20 @@ public slots:
     //******************************************
     // absolute motion
     // NOTE units in mm, mm/s and deg/s
-    virtual bool moveTo(double x, double y, double z, double speed=std::numeric_limits<double>::quiet_NaN());
+    virtual void moveTo(double x, double y, double z, double speed=std::numeric_limits<double>::quiet_NaN());
     virtual void moveXTo(double x, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveYTo(double y, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveZTo(double z, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveUTo(double u, double speed=std::numeric_limits<double>::quiet_NaN());
+    virtual void moveYTo(double y, double speed=std::numeric_limits<double>::quiet_NaN());
+    virtual void moveZTo(double z, double speed=std::numeric_limits<double>::quiet_NaN());
+    virtual void moveUTo(double u, double speed=std::numeric_limits<double>::quiet_NaN());
 
     //******************************************
     // motion relative to current location
     // NOTE units in mm, mm/s and deg/s
-    virtual bool moveBy(double x=0, double y=0, double z=0, double speed=std::numeric_limits<double>::quiet_NaN());
+    virtual void moveBy(double x=0, double y=0, double z=0, double speed=std::numeric_limits<double>::quiet_NaN());
     virtual void moveXBy(double x=0, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveYBy(double y=0, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveZBy(double z=0, double speed=std::numeric_limits<double>::quiet_NaN());
-    virtual bool moveUBy(double u=0, double speed=std::numeric_limits<double>::quiet_NaN());
+    virtual void moveYBy(double y=0, double speed=std::numeric_limits<double>::quiet_NaN());
+    virtual void moveZBy(double z=0, double speed=std::numeric_limits<double>::quiet_NaN());
+    virtual void moveUBy(double u=0, double speed=std::numeric_limits<double>::quiet_NaN());
 
     //******************************************
     // free run

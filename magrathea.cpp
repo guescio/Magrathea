@@ -114,25 +114,25 @@ Magrathea::Magrathea(QWidget *parent) :
 
     //speed
     ui->xAxisSpeedDoubleSpinBox->setFont(font);
-    ui->xAxisSpeedDoubleSpinBox->setValue(100.0);
+    ui->xAxisSpeedDoubleSpinBox->setValue(50.0);
     ui->xAxisSpeedDoubleSpinBox->setMinimum(0.0);
     ui->xAxisSpeedDoubleSpinBox->setMaximum(300.0);
     ui->xAxisSpeedDoubleSpinBox->setDecimals(1);
     ui->xAxisSpeedDoubleSpinBox->setAlignment(Qt::AlignRight);
     ui->yAxisSpeedDoubleSpinBox->setFont(font);
-    ui->yAxisSpeedDoubleSpinBox->setValue(100.0);
+    ui->yAxisSpeedDoubleSpinBox->setValue(50.0);
     ui->yAxisSpeedDoubleSpinBox->setMinimum(0.0);
     ui->yAxisSpeedDoubleSpinBox->setMaximum(300.0);
     ui->yAxisSpeedDoubleSpinBox->setDecimals(1);
     ui->yAxisSpeedDoubleSpinBox->setAlignment(Qt::AlignRight);
     ui->zAxisSpeedDoubleSpinBox->setFont(font);
-    ui->zAxisSpeedDoubleSpinBox->setValue(50.0);
+    ui->zAxisSpeedDoubleSpinBox->setValue(30.0);
     ui->zAxisSpeedDoubleSpinBox->setMinimum(0.0);
     ui->zAxisSpeedDoubleSpinBox->setMaximum(300.0);
     ui->zAxisSpeedDoubleSpinBox->setDecimals(1);
     ui->zAxisSpeedDoubleSpinBox->setAlignment(Qt::AlignRight);
     ui->uAxisSpeedDoubleSpinBox->setFont(font);
-    ui->uAxisSpeedDoubleSpinBox->setValue(50.0);
+    ui->uAxisSpeedDoubleSpinBox->setValue(30.0);
     ui->uAxisSpeedDoubleSpinBox->setMinimum(0.0);
     ui->uAxisSpeedDoubleSpinBox->setMaximum(300.0);
     ui->uAxisSpeedDoubleSpinBox->setDecimals(1);

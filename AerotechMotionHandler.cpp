@@ -288,72 +288,42 @@ void AerotechMotionHandler::homeU() {
 // NOTE units in mm, mm/s and deg/s
 
 //------------------------------------------
-//CHECK what to do with A3200MotionWaitForMotionDone?
-bool AerotechMotionHandler::moveTo(double x, double y, double z, double speed)
+void AerotechMotionHandler::moveTo(double x, double y, double z, double speed)
 {
-    qInfo("moving to (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed...", x, y, z, speed);
-    if (A3200MotionMoveAbs(gantry, TASKID_Library, xIndex, x, speed) &&
-        A3200MotionMoveAbs(gantry, TASKID_Library, yIndex, y, speed) &&
-        A3200MotionMoveAbs(gantry, TASKID_Library, zIndex, z, speed/4.)) { //move to destination (and wait) here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved to destination");
-        return true;
-    } else {
-        qWarning("could not move to destination");
-        return false;
-    }
-    return true;
-}
-
-//------------------------------------------
-//TEST
-void AerotechMotionHandler::moveXTo(double x, double speed) {
-    qInfo("move x axis to %.3f mm at %.3f mm/s speed", x, speed);
-    QtConcurrent::run(A3200MotionMoveAbs, gantry, TASKID_Library, xIndex, x, speed); //move to destination here
-    //QtConcurrent::run(A3200MotionWaitForMotionDone, gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
+    qInfo("move to (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed...", x, y, z, speed);
+    //move to destination here
+    AerotechMotionHandler::moveXTo(x, speed);
+    AerotechMotionHandler::moveYTo(y, speed);
+    AerotechMotionHandler::moveZTo(z, speed<40.?speed:40.);
     return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::moveYTo(double y, double speed) {
-    qInfo("moving y axis to %.3f mm at %.3f mm/s speed", y, speed);
-    if (A3200MotionMoveAbs(gantry, TASKID_Library, yIndex, y, speed)) { //move to destination here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved y axis to destination");
-        return true;
-    } else {
-        qWarning("could not move y axis to destination");
-        return false;
-    }
-    return true;
+void AerotechMotionHandler::moveXTo(double x, double speed) {
+    qInfo("move x axis to %.3f mm at %.3f mm/s speed", x, speed);
+    QtConcurrent::run(A3200MotionMoveAbs, gantry, TASKID_Library, xIndex, x, speed); //move to destination here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::moveZTo(double z, double speed) {
-    qInfo("moving z axis to %.3f mm at %.3f mm/s speed", z, speed);
-    if (A3200MotionMoveAbs(gantry, TASKID_Library, zIndex, z, speed)) { //move to destination here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved z axis to destination");
-        return true;
-    } else {
-        qWarning("could not move z axis to destination");
-        return false;
-    }
-    return true;
+void AerotechMotionHandler::moveYTo(double y, double speed) {
+    qInfo("move y axis to %.3f mm at %.3f mm/s speed", y, speed);
+    QtConcurrent::run(A3200MotionMoveAbs, gantry, TASKID_Library, yIndex, y, speed); //move to destination here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::moveUTo(double u, double speed) {
-    qInfo("moving u axis to %.3f mm at %.3f mm/s speed", u, speed);
-    if (A3200MotionMoveAbs(gantry, TASKID_Library, uIndex, u, speed)) { //move to destination here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved u axis to destination");
-        return true;
-    } else {
-        qWarning("could not move u axis to destination");
-        return false;
-    }
-    return true;
+void AerotechMotionHandler::moveZTo(double z, double speed) {
+    qInfo("move z axis to %.3f mm at %.3f mm/s speed", z, speed);
+    QtConcurrent::run(A3200MotionMoveAbs, gantry, TASKID_Library, zIndex, z, speed); //move to destination here
+    return;
+}
+
+//------------------------------------------
+void AerotechMotionHandler::moveUTo(double u, double speed) {
+    qInfo("move u axis to %.3f mm at %.3f mm/s speed", u, speed);
+    QtConcurrent::run(A3200MotionMoveAbs, gantry, TASKID_Library, uIndex, u, speed); //move to destination here
+    return;
 }
 
 //******************************************
@@ -361,73 +331,43 @@ bool AerotechMotionHandler::moveUTo(double u, double speed) {
 // NOTE units in mm, mm/s and deg/s
 
 //------------------------------------------
-bool AerotechMotionHandler::moveBy(double x, double y, double z, double speed)
+void AerotechMotionHandler::moveBy(double x, double y, double z, double speed)
 {
     qInfo("moving by (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed", x, y, z, speed);
-    if (A3200MotionMoveInc(gantry, TASKID_Library, xIndex, x, speed) &&
-        A3200MotionMoveInc(gantry, TASKID_Library, yIndex, y, speed) &&
-        A3200MotionMoveInc(gantry, TASKID_Library, zIndex, z, speed/4.)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved by step");
-        return true;
-    } else {
-        qWarning("could not move by step");
-        return false;
-    }
-    return true;
-}
-
-//------------------------------------------
-//TEST
-void AerotechMotionHandler::moveXBy(double x, double speed) {
-    qInfo("move x axis by %.3f mm at %.3f mm/s", x, speed);
-    QtConcurrent::run(A3200MotionMoveInc, gantry, TASKID_Library, xIndex, x, speed); //move to destination here
-    //QtConcurrent::run(A3200MotionWaitForMotionDone, gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
+    //move to destination here
+    AerotechMotionHandler::moveXBy(x, speed);
+    AerotechMotionHandler::moveYBy(y, speed);
+    AerotechMotionHandler::moveZBy(z, speed<40.?speed:40.);
     return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::moveYBy(double y, double speed) {
-    qInfo("moving y axis by %.3f mm at %.3f mm/s", y, speed);
-    if (A3200MotionMoveInc(gantry, TASKID_Library, yIndex, y, speed)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved y axis by step");
-        return true;
-    } else {
-        qWarning("could not move y axis by step");
-        return false;
-    }
-    return true;
+void AerotechMotionHandler::moveXBy(double x, double speed) {
+    qInfo("move x axis by %.3f mm at %.3f mm/s", x, speed);
+    QtConcurrent::run(A3200MotionMoveInc, gantry, TASKID_Library, xIndex, x, speed); //move to destination here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::moveZBy(double z, double speed) {
-    qInfo("moving z axis by %.3f mm at %.3f mm/s", z, speed);
-    if (A3200MotionMoveInc(gantry, TASKID_Library, zIndex, z, speed)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved z axis by step");
-        return true;
-    } else {
-        qWarning("could not move z axis by step");
-        return false;
-    }
-    return true;
+void AerotechMotionHandler::moveYBy(double y, double speed) {
+    qInfo("move y axis by %.3f mm at %.3f mm/s", y, speed);
+    QtConcurrent::run(A3200MotionMoveInc, gantry, TASKID_Library, yIndex, y, speed); //move to destination here
+    return;
 }
 
 //------------------------------------------
-bool AerotechMotionHandler::moveUBy(double u, double speed) {
-    qInfo("moving u axis by %.3f deg at %.3f deg/s", u, speed);
-    if (A3200MotionMoveInc(gantry, TASKID_Library, uIndex, u, speed)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
-        qInfo("moved u axis by step");
-        return true;
-    } else {
-        qWarning("could not move u axis by step");
-        return false;
-    }
-    return true;
+void AerotechMotionHandler::moveZBy(double z, double speed) {
+    qInfo("move z axis by %.3f mm at %.3f mm/s", x, speed);
+    QtConcurrent::run(A3200MotionMoveInc, gantry, TASKID_Library, zIndex, z, speed); //move to destination here
+    return;
 }
 
+//------------------------------------------
+void AerotechMotionHandler::moveUBy(double u, double speed) {
+    qInfo("move u axis by %.3f mm at %.3f mm/s", u, speed);
+    QtConcurrent::run(A3200MotionMoveInc, gantry, TASKID_Library, uIndex, u, speed); //move to destination here
+    return;
+}
 
 //******************************************
 // free run
