@@ -323,8 +323,7 @@ bool AerotechMotionHandler::moveTo(double x, double y, double z, double speed)
     qInfo("moving to (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed...", x, y, z, speed);
     if (A3200MotionMoveAbs(gantry, TASKID_Library, xIndex, x, speed) &&
         A3200MotionMoveAbs(gantry, TASKID_Library, yIndex, y, speed) &&
-        A3200MotionMoveAbs(gantry, TASKID_Library, zIndex, z, speed/4.)) { //move to destination (and wait) here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
+        A3200MotionMoveAbs(gantry, TASKID_Library, zIndex, z, speed<40.?speed:40.)) { //move to destination here
         qInfo("moved to destination");
         return true;
     } else {
@@ -338,7 +337,6 @@ bool AerotechMotionHandler::moveTo(double x, double y, double z, double speed)
 bool AerotechMotionHandler::moveXTo(double x, double speed) {
     qInfo("moving x axis to %.3f mm at %.3f mm/s speed", x, speed);
     if (A3200MotionMoveAbs(gantry, TASKID_Library, xIndex, x, speed)) { //move to destination here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved x axis to destination");
         return true;
     } else {
@@ -352,7 +350,6 @@ bool AerotechMotionHandler::moveXTo(double x, double speed) {
 bool AerotechMotionHandler::moveYTo(double y, double speed) {
     qInfo("moving y axis to %.3f mm at %.3f mm/s speed", y, speed);
     if (A3200MotionMoveAbs(gantry, TASKID_Library, yIndex, y, speed)) { //move to destination here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved y axis to destination");
         return true;
     } else {
@@ -366,7 +363,6 @@ bool AerotechMotionHandler::moveYTo(double y, double speed) {
 bool AerotechMotionHandler::moveZTo(double z, double speed) {
     qInfo("moving z axis to %.3f mm at %.3f mm/s speed", z, speed);
     if (A3200MotionMoveAbs(gantry, TASKID_Library, zIndex, z, speed)) { //move to destination here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved z axis to destination");
         return true;
     } else {
@@ -380,7 +376,6 @@ bool AerotechMotionHandler::moveZTo(double z, double speed) {
 bool AerotechMotionHandler::moveUTo(double u, double speed) {
     qInfo("moving u axis to %.3f mm at %.3f mm/s speed", u, speed);
     if (A3200MotionMoveAbs(gantry, TASKID_Library, uIndex, u, speed)) { //move to destination here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved u axis to destination");
         return true;
     } else {
@@ -400,8 +395,7 @@ bool AerotechMotionHandler::moveBy(double x, double y, double z, double speed)
     qInfo("moving by (%.3f mm, %.3f mm, %.3f mm) at %.3f mm/s speed", x, y, z, speed);
     if (A3200MotionMoveInc(gantry, TASKID_Library, xIndex, x, speed) &&
         A3200MotionMoveInc(gantry, TASKID_Library, yIndex, y, speed) &&
-        A3200MotionMoveInc(gantry, TASKID_Library, zIndex, z, speed/4.)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
+        A3200MotionMoveInc(gantry, TASKID_Library, zIndex, z, speed<40.?speed:40.)) { //move by step here
         qInfo("moved by step");
         return true;
     } else {
@@ -415,7 +409,6 @@ bool AerotechMotionHandler::moveBy(double x, double y, double z, double speed)
 bool AerotechMotionHandler::moveXBy(double x, double speed) {
     qInfo("moving x axis by %.3f mm at %.3f mm/s", x, speed);
     if (A3200MotionMoveInc(gantry, TASKID_Library, xIndex, x, speed)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved x axis by step");
         return true;
     } else {
@@ -429,7 +422,6 @@ bool AerotechMotionHandler::moveXBy(double x, double speed) {
 bool AerotechMotionHandler::moveYBy(double y, double speed) {
     qInfo("moving y axis by %.3f mm at %.3f mm/s", y, speed);
     if (A3200MotionMoveInc(gantry, TASKID_Library, yIndex, y, speed)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved y axis by step");
         return true;
     } else {
@@ -443,7 +435,6 @@ bool AerotechMotionHandler::moveYBy(double y, double speed) {
 bool AerotechMotionHandler::moveZBy(double z, double speed) {
     qInfo("moving z axis by %.3f mm at %.3f mm/s", z, speed);
     if (A3200MotionMoveInc(gantry, TASKID_Library, zIndex, z, speed)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved z axis by step");
         return true;
     } else {
@@ -457,7 +448,6 @@ bool AerotechMotionHandler::moveZBy(double z, double speed) {
 bool AerotechMotionHandler::moveUBy(double u, double speed) {
     qInfo("moving u axis by %.3f deg at %.3f deg/s", u, speed);
     if (A3200MotionMoveInc(gantry, TASKID_Library, uIndex, u, speed)) { //move by step here
-        A3200MotionWaitForMotionDone(gantry, allAxes, WAITOPTION_InPosition, -1, NULL); //wait
         qInfo("moved u axis by step");
         return true;
     } else {
