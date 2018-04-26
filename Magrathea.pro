@@ -26,10 +26,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         magrathea.cpp \
+        calibrator.cpp \
         MotionHandler.cpp
 
 HEADERS += \
         magrathea.h \
+        calibrator.h \
         MotionHandler.h
 
 FORMS += \
@@ -45,4 +47,14 @@ win32 : exists(C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/A3200.h) {
         INCLUDEPATH += "C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/"
         INCLUDEPATH += "C:/Program Files (x86)/Aerotech/A3200/CLibrary/Bin/"
         LIBS += -L'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Lib/' -lA3200C
+}
+
+#Valencia
+win32 : exists(ACSC/C_CPP/ACSC.h) {
+        SOURCES += ACSCMotionHandler.cpp
+        HEADERS += ACSCMotionHandler.h \
+        ACSC\C_CPP\ACSC.h \
+        DEFINES += ACSC
+        DEFINES += VALENCIA
+        LIBS += C:\Users\Silicio\WORK\Opencv_Qt_proj\Loader\ACSC\C_CPP\ACSCL_x86.LIB
 }
