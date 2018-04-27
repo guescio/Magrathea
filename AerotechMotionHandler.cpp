@@ -49,7 +49,7 @@ bool AerotechMotionHandler::connectGantry(bool flag)
         }
     } else {
         qInfo("disconnecting gantry...");
-        if (A3200Disconnect(&gantry)) { //disconnect gantry here
+        if (A3200Disconnect(&gantry)) { //disconnect gantry here//CHECK &gantry or gantry?
             qInfo("gantry disconnected");
             gantryConnected=false;
             return true;
