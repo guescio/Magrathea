@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,12 +26,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         magrathea.cpp \
-        widget.cpp
+        widget.cpp \
+    camerawidget.cpp
 
 HEADERS += \
         magrathea.h \
-        widget.h
+        widget.h \
+    camerawidget.h
 
 FORMS += \
 #        magrathea.ui
-        widget.ui
+        widget.ui \
+    camerawidget.ui

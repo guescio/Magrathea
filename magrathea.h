@@ -10,6 +10,7 @@ namespace Ui {
 
 class QTextEdit;
 class Widget;
+class CameraWidget;
 
 class Magrathea : public QMainWindow
 {
@@ -26,6 +27,7 @@ class Magrathea : public QMainWindow
 
         Ui::Magrathea *ui;
         Widget *speakUp;
+        CameraWidget *camera;
 };
 
 #endif // MAGRATHEA_H
