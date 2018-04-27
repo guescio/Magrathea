@@ -1,3 +1,3 @@
 # Magrathea #
 
-A C++/Qt/OpenCV based software for ITk petal and barrel loading.
+A C++/Qt/OpenCV based software for ATLAS ITk petal and barrel loading.
