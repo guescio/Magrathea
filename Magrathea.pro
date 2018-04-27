@@ -1,10 +1,10 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-10-07T07:29:37
+# Project created by QtCreator 2018-02-13T11:48:44
 #
 #-------------------------------------------------
 
-QT += core gui multimedia multimediawidgets
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,24 +25,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        magrathea.cpp \
-        MotionHandler.cpp
+        magrathea.cpp
 
 HEADERS += \
-        magrathea.h \
-        MotionHandler.h
+        magrathea.h
 
-FORMS += \
-        magrathea.ui
-
-#Vancouver
-win32 : exists(C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/A3200.h) {
-        message("Vancouver, Aerotech A3200 gantry")
-        DEFINES += VANCOUVER
-        DEFINES += AEROTECH
-        SOURCES += AerotechMotionHandler.cpp
-        HEADERS += AerotechMotionHandler.h
-        INCLUDEPATH += "C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/"
-        INCLUDEPATH += "C:/Program Files (x86)/Aerotech/A3200/CLibrary/Bin/"
-        LIBS += -L'C:/Program Files (x86)/Aerotech/A3200/CLibrary/Lib/' -lA3200C
-}
+#FORMS += \
+#        magrathea.ui
