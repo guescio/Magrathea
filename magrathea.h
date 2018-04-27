@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTextEdit>
+#include <opencv2/opencv.hpp>
 
 namespace Ui {
 class Magrathea;
@@ -17,6 +18,8 @@ class QTimer;
 
 #ifdef AEROTECH
 class AerotechMotionHandler;
+#elif VALENCIA
+class ACSCMotionHandler;
 #endif
 
 class Magrathea : public QWidget
@@ -38,6 +41,9 @@ private slots:
     void enableCameraBoxClicked(bool checked);
     void focusButtonClicked();
     void captureButtonClicked();
+    void calibrationCaller(int input);
+    void Calibration_ButtonClicked();
+    void Calibration_2_ButtonClicked();
 
     //gantry
     void connectGantryBoxClicked(bool checked);
@@ -53,6 +59,9 @@ private slots:
 
 private:
     Ui::Magrathea *ui;
+
+    cv::VideoCapture cap;
+    cv::Mat sub_frame;
 
     QCamera *mCamera;
     QCameraViewfinder *mCameraViewfinder;

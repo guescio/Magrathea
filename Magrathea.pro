@@ -37,6 +37,16 @@ HEADERS += \
 FORMS += \
         magrathea.ui
 
+INCLUDEPATH += C:\opencv\build\include
+LIBS += C:\opencv-build\bin\libopencv_flann331.dll
+LIBS += C:\opencv-build\bin\libopencv_core331.dll
+LIBS += C:\opencv-build\bin\libopencv_highgui331.dll
+LIBS += C:\opencv-build\bin\libopencv_videoio331.dll
+LIBS += C:\opencv-build\bin\libopencv_imgcodecs331.dll
+LIBS += C:\opencv-build\bin\libopencv_imgproc331.dll
+LIBS += C:\opencv-build\bin\libopencv_features2d331.dll
+LIBS += C:\opencv-build\bin\libopencv_calib3d331.dll
+
 #Vancouver
 win32 : exists(C:/Program Files (x86)/Aerotech/A3200/CLibrary/Include/A3200.h) {
         message("Vancouver, Aerotech A3200 gantry")

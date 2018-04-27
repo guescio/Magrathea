@@ -11,8 +11,12 @@
 #include <QtMessageHandler>
 #include <MotionHandler.h>
 #include <cmath>
+#include <QMessageBox>
+#include "calibrator.h"
 #ifdef VANCOUVER
 #include <AerotechMotionhandler.h>
+#elif VALENCIA
+#include <ACSCMotionHandler.h>
 #endif
 
 //******************************************
@@ -30,14 +34,17 @@ Magrathea::Magrathea(QWidget *parent) :
     ui->leftTabWidget->setCurrentWidget(outputLogTextEdit);
 
     //------------------------------------------
-    #ifdef VANCOUVER
-        qInfo("Vancouver, Aerotech A3200 gantry");
-        mMotionHandler = new AerotechMotionHandler();
-    #else
-        #define DEBUG
-        qInfo("where is your gantry?");
-        mMotionHandler = new MotionHandler();
-    #endif
+#ifdef VANCOUVER
+    qInfo("Vancouver, Aerotech A3200 gantry");
+    mMotionHandler = new AerotechMotionHandler();
+#elif VALENCIA
+    qInfo("Valencia, ACSC gantry");
+    mMotionHandler = new ACSCMotionHandler();
+#else
+#define DEBUG
+    qInfo("where is your gantry?");
+    mMotionHandler = new MotionHandler();
+#endif
 
     //------------------------------------------
     //font
@@ -191,6 +198,8 @@ Magrathea::Magrathea(QWidget *parent) :
     connect(ui->enableCameraBox, SIGNAL(toggled(bool)), this, SLOT(enableCameraBoxClicked(bool)));
     connect(ui->focusButton,     SIGNAL(clicked(bool)), this, SLOT(focusButtonClicked()));
     connect(ui->captureButton,   SIGNAL(clicked(bool)), this, SLOT(captureButtonClicked()));
+    connect(ui->Calib_button,    SIGNAL(clicked(bool)), this, SLOT(Calibration_ButtonClicked()));
+    connect(ui->Calib_button_2,  SIGNAL(clicked(bool)), this, SLOT(Calibration_2_ButtonClicked()));
 
     //gantry
     connect(ui->connectGantryBox, SIGNAL(toggled(bool)), this, SLOT(connectGantryBoxClicked(bool)));
@@ -296,6 +305,55 @@ void Magrathea::captureButtonClicked()
     mCamera->unlock();
     return;
 }
+//------------------------------------------
+//calibrate
+
+void Magrathea::Calibration_ButtonClicked()
+{    calibrationCaller(0); }
+
+void Magrathea::Calibration_2_ButtonClicked()
+{    calibrationCaller(1); }
+
+void Magrathea::calibrationCaller(int input){
+
+    Calibrator * calibrator = new Calibrator(this);
+    //Eventually add conmmand to move the gantry to the place where the
+    // calibration area is.
+    mCamera->stop(); //closing QCamera
+    if(!cap.open(0))     //Opening opencv-camera, needed for easier image manipulation
+        QMessageBox::critical(this, tr("Error"), tr("Could not open camera"));
+    std::string Images[12] = {"C:/Users/Silicio/WORK/Full_Size/Mini/0018.bmp",//0
+                              "C:/Users/Silicio/WORK/Temporary_files/BNL_images/image_000_600_60_15.png",
+                              "C:/Users/Silicio/WORK/Temporary_files/BNL_images/image_000_600_60_15_rotated_5_degrees.png",
+                              "C:/Users/Silicio/WORK/Temporary_files/BNL_images/image_000_600_60_15_rotated_30_degrees.png",
+                              "C:/Users/Silicio/WORK/Temporary_files/BNL_images/image_000_600_60_15_rotated_45_degrees.png",//4
+                              "C:/Users/Silicio/WORK/Temporary_files/BNL_images/image_000_600_60_15_rotated_stereo.png",
+                              "C:/Users/Silicio/WORK/Temporary_files/BNL_images/perfect_strips_0_degrees.png",
+                              "C:/Users/Silicio/WORK/Temporary_files/BNL_images/perfect_strips_1.49_degrees.png",
+                              "C:/Users/Silicio/WORK/Temporary_files/BNL_images/perfect_strips_5_degrees.png",
+                              "C:/Users/Silicio/WORK/Temporary_files/BNL_images/perfect_strips_45_degrees.png",//9
+                              "C:/Users/Silicio/WORK/Temporary_files/image_007_600_60_15_dan.png",
+                              "C:/Users/Silicio/WORK/Temporary_files/image_007_600_60_15_dan_rot_min20.png"
+                             };
+    calibrator->SetImage(Images[3]
+                ,CV_LOAD_IMAGE_COLOR);
+    calibrator->Set_camera(cap);
+    calibrator->Set_log(outputLogTextEdit);
+    double calibration_value     = -100;
+    double calibration_value_err = -10;
+    bool is_px_over_micron = (input == 0);
+    calibrator->Calibration_strips(calibration_value,calibration_value_err, is_px_over_micron);
+    QString unit = (is_px_over_micron ? " px/um" : " um/px");
+    QString output = "C: "+QString::number(calibration_value)+ " +- "+QString::number(calibration_value_err)+ unit;
+    ui->Calib_value_lineEdit->setText(output);
+    delete calibrator;
+    cap.release();         //Going back to QCameraa
+    mCamera->start();
+    return;
+}
+
+
+
 
 //******************************************
 //gantry
