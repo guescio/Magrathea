@@ -2,14 +2,13 @@
 #define MAGRATHEA_H
 
 #include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-class QTextEdit;
-QT_END_NAMESPACE
+#include <QTextEdit>
 
 namespace Ui {
     class Magrathea;
 }
+
+class QTextEdit;
 
 class Magrathea : public QMainWindow
 {
@@ -19,10 +18,11 @@ class Magrathea : public QMainWindow
         explicit Magrathea(QWidget *parent = 0);
         ~Magrathea();
 
-        QTextEdit *outputLog;
+        static QTextEdit *outputLog;
 
     private:
         Ui::Magrathea *ui;
+        //QTextEdit *outputLog;
 };
 
 #endif // MAGRATHEA_H
