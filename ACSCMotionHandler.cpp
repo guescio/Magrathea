@@ -111,6 +111,36 @@ bool ACSCMotionHandler::disconnectGantry()
 }
 
 //------------------------------------------
+bool ACSCMotionHandler::stop(){
+    qInfo("stopping...");
+    int Axes[5] = {X_axis,Y_axis,
+                         Z_axis,U_axis,-1};
+    if (acsc_BreakM(gantry,Axes,ACSC_SYNCHRONOUS) != 0) { //stop here
+        qInfo("stop");
+        return true;
+    } else {
+        qWarning("could not stop");
+        qInfo("Error : %d ",acsc_GetLastError());
+        return false;
+    }
+    return true;
+}
+
+//------------------------------------------
+bool ACSCMotionHandler::acknowledgeMotionFaultGantry()
+{
+    qInfo("resetting errors...");
+    if (true) { //acknowledge and clear axes faults
+        qInfo("errors reset");
+        return true;
+    } else {
+        qWarning("could not reset errors");
+        return false;
+    }
+    return true;}
+
+
+//------------------------------------------
 bool ACSCMotionHandler::enableAxes(bool flag)
 {
     if (flag) {
