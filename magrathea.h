@@ -9,6 +9,7 @@ namespace Ui {
 }
 
 class QTextEdit;
+class Widget;
 
 class Magrathea : public QMainWindow
 {
@@ -21,8 +22,10 @@ class Magrathea : public QMainWindow
         static QTextEdit *outputLog;
 
     private:
+        void createDockWindows();
+
         Ui::Magrathea *ui;
-        //QTextEdit *outputLog;
+        Widget *speakUp;
 };
 
 #endif // MAGRATHEA_H

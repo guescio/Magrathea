@@ -25,10 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        magrathea.cpp
+        magrathea.cpp \
+        widget.cpp
 
 HEADERS += \
-        magrathea.h
+        magrathea.h \
+        widget.h
 
-#FORMS += \
+FORMS += \
 #        magrathea.ui
+        widget.ui
